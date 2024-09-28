@@ -1,8 +1,8 @@
-import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import ContactIndexScreen from './contact';
 import HomeScreen from './home';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 function TabScreen() {
   return (

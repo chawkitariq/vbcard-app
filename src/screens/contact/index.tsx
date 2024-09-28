@@ -4,7 +4,7 @@ export * from './create';
 import {Button, Text, View} from 'react-native';
 
 function ContactIndexScreen({route, navigation}: any) {
-  console.log(route.params.contact);
+  console.log(route.params?.contact);
 
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
