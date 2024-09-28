@@ -36,12 +36,12 @@ function ContactCreateScreen({route, navigation}: any) {
       <Button
         title="Confirmer"
         onPress={() => {
-          navigation.navigate('Home', {
-            contact: {
-              firstname,
-              lastname,
-              position,
-            },
+          navigation.navigate('ContactIndex', {
+            // contact: {
+            //   firstname,
+            //   lastname,
+            //   position,
+            // },
           });
         }}
       />
