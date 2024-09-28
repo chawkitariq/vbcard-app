@@ -5,43 +5,51 @@ import TabScreen from './tab';
 import ContactDetailScreen from './contact/detail';
 import ContactCreateScreen from './contact/create';
 import LoginScreen from './auth/login';
+import {useAuthStore} from '../stores';
 
 const Stack = createNativeStackNavigator();
 
 function Router() {
+  const {isAuth} = useAuthStore();
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen
-          name="Tab"
-          component={TabScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="ContactDetail"
-          component={ContactDetailScreen}
-          options={{
-            animation: 'slide_from_right',
-            presentation: 'modal',
-          }}
-        />
-        <Stack.Screen
-          name="ContactCreate"
-          component={ContactCreateScreen}
-          options={{
-            animation: 'slide_from_bottom',
-            presentation: 'modal',
-          }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{
-            headerTitle: 'Connexion',
-          }}
-        />
+        {!isAuth() ? (
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{
+              headerTitle: 'Connexion',
+            }}
+          />
+        ) : (
+          <>
+            <Stack.Screen
+              name="Tab"
+              component={TabScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="ContactDetail"
+              component={ContactDetailScreen}
+              options={{
+                animation: 'slide_from_right',
+                presentation: 'modal',
+              }}
+            />
+            <Stack.Screen
+              name="ContactCreate"
+              component={ContactCreateScreen}
+              options={{
+                animation: 'slide_from_bottom',
+                presentation: 'modal',
+              }}
+            />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

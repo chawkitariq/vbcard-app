@@ -53,9 +53,11 @@ const LoginScreen = (props: any) => {
               placeholder="Adresse mail"
               error={!!(errors.email && touched.email)}
             />
-            {errors.email && touched.email && (
-              <HelperText type="error">{errors.email}</HelperText>
-            )}
+            <HelperText
+              type="error"
+              visible={!!(errors.email && touched.email)}>
+              {errors.email}
+            </HelperText>
           </View>
           <View>
             <TextInput
@@ -73,9 +75,11 @@ const LoginScreen = (props: any) => {
                 />
               }
             />
-            {errors.password && touched.password && (
-              <HelperText type="error">{errors.password}</HelperText>
-            )}
+            <HelperText
+              type="error"
+              visible={!!(errors.password && touched.password)}>
+              {errors.password}
+            </HelperText>
           </View>
           <Button
             style={{paddingVertical: 16 / 3, borderRadius: 16 / 3}}
