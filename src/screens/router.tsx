@@ -4,13 +4,14 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import TabScreen from './tab';
 import ContactDetailScreen from './contact/detail';
 import ContactCreateScreen from './contact/create';
+import LoginScreen from './auth/login';
 
 const Stack = createNativeStackNavigator();
 
 function Router() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Tab">
+      <Stack.Navigator initialRouteName="Login">
         <Stack.Screen
           name="Tab"
           component={TabScreen}
@@ -32,6 +33,13 @@ function Router() {
           options={{
             animation: 'slide_from_bottom',
             presentation: 'modal',
+          }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{
+            headerTitle: 'Connexion',
           }}
         />
       </Stack.Navigator>
