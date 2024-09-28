@@ -10,7 +10,7 @@ const Stack = createNativeStackNavigator();
 function Router() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="Tab">
         <Stack.Screen
           name="Tab"
           component={TabScreen}
