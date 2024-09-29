@@ -6,14 +6,12 @@ import {Pressable, View} from 'react-native';
 import {ActivityIndicator, FAB, useTheme} from 'react-native-paper';
 import {ContactApiService} from '../../services';
 import {useQuery} from '@tanstack/react-query';
-import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 import {useIsFocused} from '@react-navigation/native';
 
 function ContactIndexScreen({route, navigation}: any) {
   const isFocused = useIsFocused();
 
   const theme = useTheme();
-  const bottomTabBarHeight = useBottomTabBarHeight();
 
   const {isPending, data} = useQuery({
     queryKey: ['contacts'],
@@ -59,7 +57,7 @@ function ContactIndexScreen({route, navigation}: any) {
         style={{
           position: 'absolute',
           right: 16,
-          bottom: 16 * 1.5 + bottomTabBarHeight,
+          bottom: 16,
         }}
         visible={isFocused}
         onPress={() => navigation.navigate('ContactCreate')}
