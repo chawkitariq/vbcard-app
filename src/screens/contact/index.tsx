@@ -7,8 +7,11 @@ import {ActivityIndicator, FAB, useTheme} from 'react-native-paper';
 import {ContactApiService} from '../../services';
 import {useQuery} from '@tanstack/react-query';
 import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
+import {useIsFocused} from '@react-navigation/native';
 
 function ContactIndexScreen({route, navigation}: any) {
+  const isFocused = useIsFocused();
+
   const theme = useTheme();
   const bottomTabBarHeight = useBottomTabBarHeight();
 
@@ -44,7 +47,11 @@ function ContactIndexScreen({route, navigation}: any) {
               aspectRatio: 16 / 9,
               backgroundColor: theme.colors.primary,
             }}
-            onPress={() => console.log('on press')}></Pressable>
+            onPress={() =>
+              navigation.navigate('ContactDetail', {
+                contactId: item.id,
+              })
+            }></Pressable>
         )}
       />
       <FAB
@@ -54,6 +61,7 @@ function ContactIndexScreen({route, navigation}: any) {
           right: 16,
           bottom: 16 * 1.5 + bottomTabBarHeight,
         }}
+        visible={isFocused}
         onPress={() => navigation.navigate('ContactCreate')}
       />
     </View>

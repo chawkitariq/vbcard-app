@@ -37,7 +37,7 @@ function Router() {
               name="HomeFilter"
               component={HomeFilterScreen}
               options={{
-                animation: 'slide_from_bottom',
+                animation: 'simple_push',
                 presentation: 'modal',
               }}
             />
@@ -45,7 +45,7 @@ function Router() {
               name="ContactDetail"
               component={ContactDetailScreen}
               options={{
-                animation: 'slide_from_right',
+                animation: 'simple_push',
                 presentation: 'modal',
               }}
             />
@@ -53,7 +53,7 @@ function Router() {
               name="ContactCreate"
               component={ContactCreateScreen}
               options={{
-                animation: 'slide_from_bottom',
+                animation: 'simple_push',
                 presentation: 'modal',
               }}
             />
