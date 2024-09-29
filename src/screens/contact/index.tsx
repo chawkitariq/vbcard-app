@@ -2,7 +2,7 @@ export * from './detail';
 export * from './create';
 
 import {FlashList} from '@shopify/flash-list';
-import {Pressable, View} from 'react-native';
+import {Pressable, RefreshControl, View} from 'react-native';
 import {ActivityIndicator, FAB, useTheme} from 'react-native-paper';
 import {ContactApiService} from '../../services';
 import {useQuery} from '@tanstack/react-query';
@@ -13,7 +13,7 @@ function ContactIndexScreen({route, navigation}: any) {
 
   const theme = useTheme();
 
-  const {isPending, data} = useQuery({
+  const {isPending, data, refetch} = useQuery({
     queryKey: ['contacts'],
     queryFn: ContactApiService.findAll,
   });
@@ -34,6 +34,9 @@ function ContactIndexScreen({route, navigation}: any) {
   return (
     <View style={{minHeight: '100%', padding: 16 * 1.5}}>
       <FlashList
+        refreshControl={
+          <RefreshControl refreshing={isPending} onRefresh={() => refetch()} />
+        }
         data={data?.contacts || []}
         estimatedItemSize={16 / 9}
         ItemSeparatorComponent={() => <View style={{height: 16 * 1.5}}></View>}

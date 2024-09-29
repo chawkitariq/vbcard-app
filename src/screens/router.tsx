@@ -7,6 +7,7 @@ import ContactCreateScreen from './contact/create';
 import LoginScreen from './auth/login';
 import {useAuthStore} from '../stores';
 import HomeFilterScreen from './home/filter';
+import ContactUpdateScreen from './contact/update';
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +43,14 @@ function Router() {
               }}
             />
             <Stack.Screen
+              name="ContactCreate"
+              component={ContactCreateScreen}
+              options={{
+                animation: 'simple_push',
+                presentation: 'modal',
+              }}
+            />
+            <Stack.Screen
               name="ContactDetail"
               component={ContactDetailScreen}
               options={{
@@ -50,8 +59,8 @@ function Router() {
               }}
             />
             <Stack.Screen
-              name="ContactCreate"
-              component={ContactCreateScreen}
+              name="ContactUpdate"
+              component={ContactUpdateScreen}
               options={{
                 animation: 'simple_push',
                 presentation: 'modal',

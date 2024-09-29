@@ -8,4 +8,8 @@ export class ContactApiService {
     const {data} = await api.get('/contacts');
     return data as {contacts: Contact[]};
   }
+
+  public static async delete(id: string) {
+    return api.delete(`/contacts/${id}`);
+  }
 }
