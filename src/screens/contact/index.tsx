@@ -3,12 +3,14 @@ export * from './create';
 
 import {FlashList} from '@shopify/flash-list';
 import {Pressable, View} from 'react-native';
-import {ActivityIndicator, MD3Colors, useTheme} from 'react-native-paper';
+import {ActivityIndicator, FAB, useTheme} from 'react-native-paper';
 import {ContactApiService} from '../../services';
 import {useQuery} from '@tanstack/react-query';
+import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 
 function ContactIndexScreen({route, navigation}: any) {
   const theme = useTheme();
+  const bottomTabBarHeight = useBottomTabBarHeight();
 
   const {isPending, data} = useQuery({
     queryKey: ['contacts'],
@@ -44,6 +46,15 @@ function ContactIndexScreen({route, navigation}: any) {
             }}
             onPress={() => console.log('on press')}></Pressable>
         )}
+      />
+      <FAB
+        icon="plus"
+        style={{
+          position: 'absolute',
+          right: 16,
+          bottom: 16 * 1.5 + bottomTabBarHeight,
+        }}
+        onPress={() => navigation.navigate('ContactCreate')}
       />
     </View>
   );
