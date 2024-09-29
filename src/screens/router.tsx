@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import TabScreen from './tab';
+import BottomTabScreen from './bottom-tab';
 import ContactDetailScreen from './contact/detail';
 import ContactCreateScreen from './contact/create';
 import LoginScreen from './auth/login';
@@ -27,8 +27,8 @@ function Router() {
         ) : (
           <>
             <Stack.Screen
-              name="Tab"
-              component={TabScreen}
+              name="BottomTab"
+              component={BottomTabScreen}
               options={{
                 headerShown: false,
               }}
