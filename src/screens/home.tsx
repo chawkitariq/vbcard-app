@@ -1,16 +1,13 @@
 import {useQuery} from '@tanstack/react-query';
 import {Text, View} from 'react-native';
 import {ActivityIndicator, Card} from 'react-native-paper';
-import {api} from '../configs';
 import {FlashList} from '@shopify/flash-list';
+import {ContactFollowerApiService} from '../services';
 
 function HomeScreen({route, navigation}: any) {
-  const {isPending, error, data} = useQuery({
+  const {isPending, data} = useQuery({
     queryKey: ['repoData'],
-    queryFn: async () => {
-      const {data} = await api.get('/users/me/followings');
-      return data;
-    },
+    queryFn: ContactFollowerApiService.findMeFollowings,
   });
 
   if (isPending) {
