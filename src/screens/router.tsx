@@ -6,6 +6,7 @@ import ContactDetailScreen from './contact/detail';
 import ContactCreateScreen from './contact/create';
 import LoginScreen from './auth/login';
 import {useAuthStore} from '../stores';
+import HomeFilterScreen from './home/filter';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,14 @@ function Router() {
               component={TabScreen}
               options={{
                 headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="HomeFilter"
+              component={HomeFilterScreen}
+              options={{
+                animation: 'slide_from_bottom',
+                presentation: 'modal',
               }}
             />
             <Stack.Screen

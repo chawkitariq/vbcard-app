@@ -1,10 +1,19 @@
 import {useQuery} from '@tanstack/react-query';
 import {Text, View} from 'react-native';
-import {ActivityIndicator, Card} from 'react-native-paper';
+import {
+  ActivityIndicator,
+  Card,
+  IconButton,
+  MD3Colors,
+  Searchbar,
+} from 'react-native-paper';
 import {FlashList} from '@shopify/flash-list';
-import {ContactFollowerApiService} from '../services';
+import {ContactFollowerApiService} from '../../services';
+import {useState} from 'react';
 
 function HomeScreen({route, navigation}: any) {
+  const [searchQuery, setSearchQuery] = useState('');
+
   const {isPending, data} = useQuery({
     queryKey: ['repoData'],
     queryFn: ContactFollowerApiService.findMeFollowings,
@@ -24,12 +33,25 @@ function HomeScreen({route, navigation}: any) {
   }
 
   return (
-    <View style={{minHeight: '100%'}}>
+    <View
+      style={{
+        minHeight: '100%',
+        paddingHorizontal: 16 * 1.5,
+        paddingVertical: 16,
+        gap: 16,
+      }}>
+      <Searchbar
+        placeholder="Rechercher"
+        onChangeText={setSearchQuery}
+        value={searchQuery}
+        clearButtonMode="unless-editing"
+        traileringIcon="filter"
+        onTraileringIconPress={() => navigation.navigate('HomeFilter')}
+      />
       <FlashList
         data={data?.contacts || []}
         estimatedItemSize={16 * 10}
         numColumns={2}
-        contentContainerStyle={{padding: 16 * 1.5}}
         ItemSeparatorComponent={() => <View style={{height: 16}}></View>}
         renderItem={({item, index}) => (
           <Card
