@@ -1,27 +1,49 @@
 export * from './detail';
 export * from './create';
 
-import {Button, Text, View} from 'react-native';
+import {FlashList} from '@shopify/flash-list';
+import {Pressable, View} from 'react-native';
+import {ActivityIndicator, MD3Colors, useTheme} from 'react-native-paper';
+import {ContactApiService} from '../../services';
+import {useQuery} from '@tanstack/react-query';
 
 function ContactIndexScreen({route, navigation}: any) {
-  console.log(route.params?.contact);
+  const theme = useTheme();
+
+  const {isPending, data} = useQuery({
+    queryKey: ['contacts'],
+    queryFn: ContactApiService.findAll,
+  });
+
+  if (isPending) {
+    return (
+      <View
+        style={{
+          minHeight: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
 
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Contact Index</Text>
-      <Button
-        title="Nouveau contact"
-        onPress={() => {
-          navigation.navigate('ContactCreate');
-        }}
-      />
-      <Button
-        title="Voir le contact"
-        onPress={() => {
-          navigation.navigate('ContactDetail', {
-            contactId: 86,
-          });
-        }}
+    <View style={{minHeight: '100%', padding: 16 * 1.5}}>
+      <FlashList
+        data={data?.contacts || []}
+        estimatedItemSize={16 / 9}
+        ItemSeparatorComponent={() => <View style={{height: 16 * 1.5}}></View>}
+        renderItem={({item, index}) => (
+          <Pressable
+            style={{
+              flexGrow: 1,
+              borderRadius: 16 / 3,
+              aspectRatio: 16 / 9,
+              backgroundColor: theme.colors.primary,
+            }}
+            onPress={() => console.log('on press')}></Pressable>
+        )}
       />
     </View>
   );
