@@ -7,11 +7,9 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(config => {
-  if (config.headers?.Authorization) {
-    const jwt = useAuthStore.getState().jwt;
-    if (jwt) {
-      config.headers['Authorization'] = `Bearer ${jwt}`;
-    }
+  const jwt = useAuthStore.getState().jwt;
+  if (jwt) {
+    config.headers['Authorization'] = `Bearer ${jwt}`;
   }
   return config;
 });

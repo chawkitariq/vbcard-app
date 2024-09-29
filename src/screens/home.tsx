@@ -1,13 +1,16 @@
 import {useQuery} from '@tanstack/react-query';
-import axios from 'axios';
 import {Text, View} from 'react-native';
-import {ActivityIndicator, Button} from 'react-native-paper';
-import {API_BASE_URL} from '../constants';
+import {ActivityIndicator, Card} from 'react-native-paper';
+import {api} from '../configs';
+import {FlashList} from '@shopify/flash-list';
 
 function HomeScreen({route, navigation}: any) {
   const {isPending, error, data} = useQuery({
     queryKey: ['repoData'],
-    queryFn: () => axios.get(`${API_BASE_URL}/contacts`),
+    queryFn: async () => {
+      const {data} = await api.get('/users/me/followings');
+      return data;
+    },
   });
 
   if (isPending) {
@@ -24,14 +27,31 @@ function HomeScreen({route, navigation}: any) {
   }
 
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Home Screen</Text>
-      <Button
-        icon="camera"
-        mode="contained"
-        onPress={() => console.log('Pressed')}>
-        Press me
-      </Button>
+    <View style={{minHeight: '100%'}}>
+      <FlashList
+        data={data?.contacts || []}
+        estimatedItemSize={16 * 10}
+        numColumns={2}
+        contentContainerStyle={{padding: 16 * 1.5}}
+        ItemSeparatorComponent={() => <View style={{height: 16}}></View>}
+        renderItem={({item, index}) => (
+          <Card
+            style={[
+              {flexGrow: 1, aspectRatio: 1},
+              index % 2 === 0
+                ? {
+                    marginRight: 16 / 2,
+                  }
+                : {
+                    marginLeft: 16 / 2,
+                  },
+            ]}>
+            <Card.Content>
+              <Text>Contact</Text>
+            </Card.Content>
+          </Card>
+        )}
+      />
     </View>
   );
 }
