@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BottomTabScreen from './bottom-tab';
 import ContactDetailScreen from './contact/detail';
@@ -15,61 +14,59 @@ function Router() {
   const {isAuth} = useAuthStore();
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        {!isAuth() ? (
+    <Stack.Navigator initialRouteName="Login">
+      {!isAuth() ? (
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{
+            headerTitle: 'Connexion',
+          }}
+        />
+      ) : (
+        <>
           <Stack.Screen
-            name="Login"
-            component={LoginScreen}
+            name="BottomTab"
+            component={BottomTabScreen}
             options={{
-              headerTitle: 'Connexion',
+              headerShown: false,
             }}
           />
-        ) : (
-          <>
-            <Stack.Screen
-              name="BottomTab"
-              component={BottomTabScreen}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="HomeFilter"
-              component={HomeFilterScreen}
-              options={{
-                animation: 'simple_push',
-                presentation: 'modal',
-              }}
-            />
-            <Stack.Screen
-              name="ContactCreate"
-              component={ContactCreateScreen}
-              options={{
-                animation: 'simple_push',
-                presentation: 'modal',
-              }}
-            />
-            <Stack.Screen
-              name="ContactDetail"
-              component={ContactDetailScreen}
-              options={{
-                animation: 'simple_push',
-                presentation: 'modal',
-              }}
-            />
-            <Stack.Screen
-              name="ContactUpdate"
-              component={ContactUpdateScreen}
-              options={{
-                animation: 'simple_push',
-                presentation: 'modal',
-              }}
-            />
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+          <Stack.Screen
+            name="HomeFilter"
+            component={HomeFilterScreen}
+            options={{
+              animation: 'simple_push',
+              presentation: 'modal',
+            }}
+          />
+          <Stack.Screen
+            name="ContactCreate"
+            component={ContactCreateScreen}
+            options={{
+              animation: 'simple_push',
+              presentation: 'modal',
+            }}
+          />
+          <Stack.Screen
+            name="ContactDetail"
+            component={ContactDetailScreen}
+            options={{
+              animation: 'simple_push',
+              presentation: 'modal',
+            }}
+          />
+          <Stack.Screen
+            name="ContactUpdate"
+            component={ContactUpdateScreen}
+            options={{
+              animation: 'simple_push',
+              presentation: 'modal',
+            }}
+          />
+        </>
+      )}
+    </Stack.Navigator>
   );
 }
 
