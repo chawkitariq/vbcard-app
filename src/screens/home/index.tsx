@@ -1,6 +1,6 @@
 import {useQuery} from '@tanstack/react-query';
 import {Pressable, RefreshControl, View} from 'react-native';
-import {ActivityIndicator, MD3Colors} from 'react-native-paper';
+import {ActivityIndicator, DefaultTheme, MD3Colors} from 'react-native-paper';
 import {FlashList} from '@shopify/flash-list';
 import {ContactFollowerApiService} from '../../services';
 import {HomeHeaderLayout} from '../../layouts';
@@ -53,9 +53,9 @@ function HomeScreen(props: NativeStackHeaderProps) {
               style={[
                 {
                   flexGrow: 1,
-                  aspectRatio: 1,
+                  aspectRatio: 4 / 3,
                   borderRadius: 16 / 3,
-                  backgroundColor: MD3Colors.primary50,
+                  backgroundColor: DefaultTheme.colors.surfaceVariant,
                 },
                 index % 2 === 0
                   ? {

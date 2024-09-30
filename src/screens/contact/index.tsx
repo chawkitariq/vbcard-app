@@ -46,7 +46,7 @@ function ContactIndexScreen({route, navigation}: any) {
               flexGrow: 1,
               borderRadius: 16 / 3,
               aspectRatio: 16 / 9,
-              backgroundColor: theme.colors.primary,
+              backgroundColor: theme.colors.surfaceVariant,
             }}
             onPress={() =>
               navigation.navigate('ContactDetail', {
