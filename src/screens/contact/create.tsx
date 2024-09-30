@@ -1,11 +1,15 @@
-import {Formik} from 'formik';
+import {FieldArray, Formik} from 'formik';
+import React from 'react';
 import {useCallback, useState} from 'react';
-import {View} from 'react-native';
-import {Button, Icon, IconButton, TextInput} from 'react-native-paper';
+import {Pressable, ScrollView, Text, View} from 'react-native';
+import {Button, IconButton, Menu, TextInput} from 'react-native-paper';
 
 function ContactCreateScreen({route, navigation}: any) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const [isShowMoreFields, setIsShowMoreFields] = useState(false);
+  const [isLabelMenuVisible, setIsLabelMenuVisible] = useState<{
+    [key: string]: boolean;
+  }>();
 
   const handleCreate = useCallback((data: any) => {
     console.log(data);
@@ -15,7 +19,6 @@ function ContactCreateScreen({route, navigation}: any) {
     <View
       style={{
         minHeight: '100%',
-        padding: 16,
       }}>
       <Formik
         initialValues={{
@@ -28,122 +31,160 @@ function ContactCreateScreen({route, navigation}: any) {
           company: '',
           companyDepartement: '',
           companyTitle: '',
-          tels: [],
+          tels: [
+            {
+              value: '',
+              label: 'Home',
+            },
+            {
+              value: '',
+              label: 'Home',
+            },
+          ],
           emails: [],
           addresses: [],
           urls: [],
         }}
         validateOnChange={true}
         onSubmit={handleCreate}>
-        {({handleChange, handleBlur, handleSubmit, values}) => (
-          <View style={{gap: 16 * 1.5}}>
-            <View
-              style={{
-                flexDirection: 'row',
-                gap: 16 / 1.5,
-              }}>
-              <View style={{flexGrow: 1, gap: 16 * 1.5}}>
-                <View style={{flexDirection: 'row', gap: 16 / 1.5}}>
-                  <Icon size={24} source="account-outline" />
-                  <View style={{flexGrow: 1, gap: 16 * 0.75}}>
-                    {isExpanded && (
-                      <TextInput
-                        mode="outlined"
-                        onChangeText={handleChange('namePrefix')}
-                        onBlur={handleBlur('namePrefix')}
-                        value={values.namePrefix}
-                        placeholder="Prefix"
-                      />
-                    )}
+        {({handleChange, handleBlur, handleSubmit, setFieldValue, values}) => (
+          <ScrollView style={{paddingHorizontal: 16 * 1.5}}>
+            <View style={{gap: 16}}>
+              <View>
+                {isExpanded && (
+                  <TextInput
+                    onChangeText={handleChange('namePrefix')}
+                    onBlur={handleBlur('namePrefix')}
+                    value={values.namePrefix}
+                    label="Prefix"
+                  />
+                )}
+                <TextInput
+                  onChangeText={handleChange('firstName')}
+                  onBlur={handleBlur('firstName')}
+                  value={values.firstName}
+                  label="Prénom"
+                />
+                {isExpanded && (
+                  <TextInput
+                    onChangeText={handleChange('middleName')}
+                    onBlur={handleBlur('middleName')}
+                    value={values.middleName}
+                    label="Deuxième prénom"
+                  />
+                )}
+                <TextInput
+                  onChangeText={handleChange('lastName')}
+                  onBlur={handleBlur('lastName')}
+                  value={values.lastName}
+                  label="Nom"
+                />
+                {isExpanded && (
+                  <>
                     <TextInput
-                      mode="outlined"
-                      onChangeText={handleChange('firstName')}
-                      onBlur={handleBlur('firstName')}
-                      value={values.firstName}
-                      placeholder="Prénom"
+                      onChangeText={handleChange('nameSuffix')}
+                      onBlur={handleBlur('nameSuffix')}
+                      value={values.nameSuffix}
+                      label="Suffixe"
                     />
-                    {isExpanded && (
-                      <TextInput
-                        mode="outlined"
-                        onChangeText={handleChange('middleName')}
-                        onBlur={handleBlur('middleName')}
-                        value={values.middleName}
-                        placeholder="Deuxième prénom"
-                      />
-                    )}
                     <TextInput
-                      mode="outlined"
-                      onChangeText={handleChange('lastName')}
-                      onBlur={handleBlur('lastName')}
-                      value={values.lastName}
-                      placeholder="Nom"
+                      onChangeText={handleChange('nickName')}
+                      onBlur={handleBlur('nickName')}
+                      value={values.nickName}
+                      label="Surnom"
                     />
-                    {isExpanded && (
-                      <>
-                        <TextInput
-                          mode="outlined"
-                          onChangeText={handleChange('nameSuffix')}
-                          onBlur={handleBlur('nameSuffix')}
-                          value={values.nameSuffix}
-                          placeholder="Suffixe"
-                        />
-                        <TextInput
-                          mode="outlined"
-                          onChangeText={handleChange('nickName')}
-                          onBlur={handleBlur('nickName')}
-                          value={values.nickName}
-                          placeholder="Surnom"
-                        />
-                      </>
-                    )}
-                  </View>
-                </View>
-
-                <View style={{flexDirection: 'row', gap: 16 / 1.5}}>
-                  <Icon size={24} source="domain" />
-                  <View style={{flexGrow: 1, gap: 16 * 0.75}}>
-                    <TextInput
-                      mode="outlined"
-                      onChangeText={handleChange('company')}
-                      onBlur={handleBlur('company')}
-                      value={values.company}
-                      placeholder="Entreprise"
-                    />
-                    {isShowMoreFields && (
-                      <>
-                        <TextInput
-                          mode="outlined"
-                          onChangeText={handleChange('companyDepartement')}
-                          onBlur={handleBlur('companyDepartement')}
-                          value={values.companyDepartement}
-                          placeholder="Département"
-                        />
-                        <TextInput
-                          mode="outlined"
-                          onChangeText={handleChange('companyTitle')}
-                          onBlur={handleBlur('companyTitle')}
-                          value={values.companyTitle}
-                          placeholder="Poste"
-                        />
-                      </>
-                    )}
-                  </View>
-                </View>
+                  </>
+                )}
               </View>
 
-              <IconButton
-                size={24}
-                icon={!isExpanded ? 'chevron-down' : 'chevron-up'}
-                onPress={() => setIsExpanded(s => !s)}
-              />
-            </View>
+              <View style={{flexGrow: 1}}>
+                <TextInput
+                  onChangeText={handleChange('company')}
+                  onBlur={handleBlur('company')}
+                  value={values.company}
+                  label="Entreprise"
+                />
+                {isShowMoreFields && (
+                  <>
+                    <TextInput
+                      onChangeText={handleChange('companyDepartement')}
+                      onBlur={handleBlur('companyDepartement')}
+                      value={values.companyDepartement}
+                      label="Département"
+                    />
+                    <TextInput
+                      onChangeText={handleChange('companyTitle')}
+                      onBlur={handleBlur('companyTitle')}
+                      value={values.companyTitle}
+                      label="Poste"
+                    />
+                  </>
+                )}
+              </View>
 
-            {!isShowMoreFields && (
-              <Button onPress={() => setIsShowMoreFields(true)}>
-                Afficher plus de champs
-              </Button>
-            )}
-          </View>
+              <FieldArray name="tels">
+                {({remove, push}) => (
+                  <>
+                    {values.tels.map((tel, index) => (
+                      <View
+                        key={index}
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          gap: 16,
+                        }}>
+                        <TextInput
+                          style={{flex: 1, flexGrow: 1}}
+                          onChangeText={handleChange(`tels.${index}.value`)}
+                          onBlur={handleBlur(`tels.${index}.value`)}
+                          value={values.tels[index].value}
+                          label="Téléphone"
+                        />
+                        <Menu
+                          visible={!!isLabelMenuVisible?.[`tels.${index}`]}
+                          onDismiss={() =>
+                            setIsLabelMenuVisible({[`tels.${index}`]: false})
+                          }
+                          anchor={
+                            <Pressable
+                              onPress={() => {
+                                setIsLabelMenuVisible({
+                                  [`tels.${index}`]: true,
+                                });
+                              }}>
+                              <TextInput
+                                label="Label"
+                                editable={false}
+                                onChangeText={handleChange(
+                                  `tels.${index}.label`,
+                                )}
+                                onBlur={handleBlur(`tels.${index}.label`)}
+                                value={values.tels[index].label}
+                                right={<TextInput.Icon icon="chevron-down" />}
+                              />
+                            </Pressable>
+                          }>
+                          <Menu.Item title="Partager" />
+                          <Menu.Item title="Supprimer" />
+                        </Menu>
+                      </View>
+                    ))}
+                    <IconButton
+                      mode="contained-tonal"
+                      icon="plus"
+                      style={{alignSelf: 'center'}}
+                      onPress={() =>
+                        push({
+                          value: '',
+                          label: 'home',
+                        })
+                      }
+                    />
+                  </>
+                )}
+              </FieldArray>
+            </View>
+          </ScrollView>
         )}
       </Formik>
     </View>
