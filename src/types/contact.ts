@@ -10,3 +10,7 @@ export type Contact = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type CreateContactPayload = {
+  vcard: string
+}

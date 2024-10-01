@@ -1,3 +1,4 @@
+import {useMutation} from '@tanstack/react-query';
 import {FieldArray, Formik, FormikProps} from 'formik';
 import React, {useEffect, useRef} from 'react';
 import {useCallback, useState} from 'react';
@@ -11,6 +12,8 @@ import {
   TextInput,
   useTheme,
 } from 'react-native-paper';
+import vCard from 'vcf';
+import {ContactApiService} from '../../services';
 
 const TYPES = ['mobile', 'home', 'work', 'other'];
 
@@ -49,9 +52,32 @@ function ContactCreateScreen({route, navigation}: any) {
     [key: string]: boolean;
   }>();
 
-  const handleCreate = useCallback((data: any) => {
-    console.log(data);
-  }, []);
+  const {isPending, mutate: handleCreate} = useMutation({
+    mutationKey: ['contacts'],
+    mutationFn: ContactApiService.create,
+    onSuccess: () => {
+      navigation.goBack();
+    },
+    onError: error => console.error(error),
+  });
+
+  const handleSubmit = useCallback(
+    (data: any) => {
+      const vcard = new vCard();
+      vcard.add('fb', 'Jean Dupont');
+      vcard.add('n', 'Dupont;Jean');
+      vcard.add('org', 'Meetdeal');
+      vcard.add('kind', 'individual');
+      vcard.add('note', 'Je connais la technique du tigre et de la grue.');
+      vcard.add('tel', '073373737', {type: 'uri', label: 'home'});
+      vcard.add('tel', '073373737', {type: 'uri', label: 'home'});
+      vcard.add('tel', '073373737', {type: 'uri', label: 'home'});
+      vcard.add('adr', ';;3 rus des Lys;Lyon;12;12345;France', {type: 'home'});
+      vcard.add('adr', ';;3 rus des Lys;Lyon;12;12345;France', {type: 'home'});
+      handleCreate({vcard: vcard.toString()});
+    },
+    [handleCreate],
+  );
 
   const formRef = useRef<FormikProps<typeof initialValues>>(null);
 
@@ -76,7 +102,7 @@ function ContactCreateScreen({route, navigation}: any) {
         innerRef={formRef}
         initialValues={initialValues}
         validateOnChange={true}
-        onSubmit={handleCreate}>
+        onSubmit={handleSubmit}>
         {({handleChange, handleBlur, handleSubmit, setFieldValue, values}) => (
           <View style={{padding: 16 * 1.5}}>
             <List.Section>
