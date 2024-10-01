@@ -5,7 +5,10 @@ export const HomeHeaderLayout = ({navigation}: NativeStackHeaderProps) => {
   return (
     <Appbar.Header>
       <Appbar.Content title="" />
-      <Appbar.Action icon="plus-circle" />
+      <Appbar.Action
+        icon="plus-circle"
+        onPress={() => navigation.navigate('QrCodeCameraScanner')}
+      />
     </Appbar.Header>
   );
 };

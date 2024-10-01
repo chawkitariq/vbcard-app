@@ -7,6 +7,7 @@ import LoginScreen from './auth/login';
 import {useAuthStore} from '../stores';
 import HomeFilterScreen from './home/filter';
 import ContactUpdateScreen from './contact/update';
+import QrCodeCameraScannerScreen from './qrcode-camera-scanner';
 
 const Stack = createNativeStackNavigator();
 
@@ -60,6 +61,15 @@ function Router() {
             name="ContactUpdate"
             component={ContactUpdateScreen}
             options={{
+              animation: 'simple_push',
+              presentation: 'modal',
+            }}
+          />
+          <Stack.Screen
+            name="QrCodeCameraScanner"
+            component={QrCodeCameraScannerScreen}
+            options={{
+              headerShown: false,
               animation: 'simple_push',
               presentation: 'modal',
             }}
