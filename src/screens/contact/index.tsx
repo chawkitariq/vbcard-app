@@ -32,8 +32,9 @@ function ContactIndexScreen({route, navigation}: any) {
   }
 
   return (
-    <View style={{minHeight: '100%', padding: 16 * 1.5}}>
+    <View style={{minHeight: '100%'}}>
       <FlashList
+        contentContainerStyle={{padding: 16 * 1.5}}
         refreshControl={
           <RefreshControl refreshing={isPending} onRefresh={() => refetch()} />
         }
