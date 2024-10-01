@@ -15,6 +15,7 @@ import {
 
 import Router from './screens/router';
 import {useMemo} from 'react';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const {LightTheme, DarkTheme} = adaptNavigationTheme({
   reactNavigationLight: NavigationDefaultTheme,
@@ -38,13 +39,15 @@ function App() {
   }, [isDarkMode]);
 
   return (
-    <PaperProvider theme={theme}>
-      <NavigationContainer theme={theme}>
-        <QueryClientProvider client={queryClient}>
-          <Router />
-        </QueryClientProvider>
-      </NavigationContainer>
-    </PaperProvider>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <PaperProvider theme={theme}>
+        <NavigationContainer theme={theme}>
+          <QueryClientProvider client={queryClient}>
+            <Router />
+          </QueryClientProvider>
+        </NavigationContainer>
+      </PaperProvider>
+    </GestureHandlerRootView>
   );
 }
 
