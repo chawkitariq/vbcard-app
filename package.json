@@ -29,6 +29,7 @@
     "react-native-screens": "^3.34.0",
     "react-native-vector-icons": "^10.2.0",
     "react-native-vision-camera": "^4.5.3",
+    "vcf": "^2.1.2",
     "yup": "^1.4.0",
     "zustand": "^5.0.0-rc.2"
   },
