@@ -8,6 +8,7 @@ import {useAuthStore} from '../stores';
 import HomeFilterScreen from './home/filter';
 import ContactUpdateScreen from './contact/update';
 import QrCodeCameraScannerScreen from './qrcode-camera-scanner';
+import RegisterScreen from './auth/register';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,15 +16,24 @@ function Router() {
   const {isAuth} = useAuthStore();
 
   return (
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator initialRouteName="Register">
       {!isAuth() ? (
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
+        <>
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Register"
+            component={RegisterScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+        </>
       ) : (
         <>
           <Stack.Screen

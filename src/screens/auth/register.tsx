@@ -1,40 +1,52 @@
 import {useMutation} from '@tanstack/react-query';
-import {Formik} from 'formik';
-import {Text, View} from 'react-native';
+import {Formik, FormikProps} from 'formik';
+import {Alert, Text, View} from 'react-native';
 import {Button, HelperText, TextInput} from 'react-native-paper';
 import {AuthApiService} from '../../services';
-import {useAuthStore} from '../../stores';
-import {AuthLoginResponsePayload} from '../../types';
-import {useState} from 'react';
-import {object, string} from 'yup';
+import {useCallback, useRef, useState} from 'react';
+import {object, ref, string} from 'yup';
+
+const initialValues = {email: '', password: '', passwordConfirmation: ''};
 
 const validationSchema = object().shape({
-  email: string()
-    .email('Doit être une adresse mail valide')
-    .required('Obligatoire'),
+  email: string().email('Adresse mail invalide').required('Obligatoire'),
   password: string().required('Obligatoire'),
+  passwordConfirmation: string()
+    .required('Obligatoire')
+    .oneOf([ref('password')], 'Les mots de passe ne correspondent pas'),
 });
 
-const LoginScreen = ({navigation}: any) => {
+const RegisterScreen = ({navigation}: any) => {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
-  const {login} = useAuthStore();
+  const formRef = useRef<FormikProps<typeof initialValues>>(null);
 
-  const {isPending, mutate: handleLogin} = useMutation({
-    mutationKey: ['login'],
-    mutationFn: AuthApiService.login,
-    onSuccess: (payload: AuthLoginResponsePayload) => {
-      login(payload);
+  const {isPending, mutate: handleRegister} = useMutation({
+    mutationKey: ['register'],
+    mutationFn: AuthApiService.register,
+    onSuccess: () => {
+      formRef?.current?.resetForm();
+      Alert.alert('Inscription', 'Inscription réussi', [
+        {onPress: () => navigation.navigate('Login')},
+      ]);
     },
     onError: error => console.error(error),
   });
 
+  const handleSubmit = useCallback(
+    ({passwordConfirmation, ...payload}: typeof initialValues) => {
+      handleRegister(payload);
+    },
+    [handleRegister],
+  );
+
   return (
     <Formik
-      initialValues={{email: '', password: ''}}
+      innerRef={formRef}
+      initialValues={initialValues}
       validationSchema={validationSchema}
       validateOnChange={true}
-      onSubmit={handleLogin}>
+      onSubmit={handleSubmit}>
       {({handleChange, handleBlur, handleSubmit, errors, touched, values}) => (
         <View
           style={{
@@ -79,10 +91,35 @@ const LoginScreen = ({navigation}: any) => {
               {errors.password}
             </HelperText>
           </View>
+          <View>
+            <TextInput
+              onChangeText={handleChange('passwordConfirmation')}
+              onBlur={handleBlur('passwordConfirmation')}
+              value={values.passwordConfirmation}
+              placeholder="Confirmation du mot de passe"
+              secureTextEntry={isPasswordHidden}
+              error={
+                !!(errors.passwordConfirmation && touched.passwordConfirmation)
+              }
+              right={
+                <TextInput.Icon
+                  icon={isPasswordHidden ? 'eye' : 'eye-off'}
+                  onPress={() => setIsPasswordHidden(s => !s)}
+                />
+              }
+            />
+            <HelperText
+              type="error"
+              visible={
+                !!(errors.passwordConfirmation && touched.passwordConfirmation)
+              }>
+              {errors.passwordConfirmation}
+            </HelperText>
+          </View>
           <Text
-            onPress={() => navigation.navigate('Register')}
+            onPress={() => navigation.navigate('Login')}
             style={{alignSelf: 'flex-end', textDecorationLine: 'underline'}}>
-            Pas encore inscrit ?
+            Vous êtes déjâ inscrit ?
           </Text>
           <Button
             style={{paddingVertical: 16 / 3, borderRadius: 16 / 3}}
@@ -90,7 +127,7 @@ const LoginScreen = ({navigation}: any) => {
             onPress={() => handleSubmit()}
             disabled={isPending}
             loading={isPending}>
-            Se connecter
+            S'inscrire
           </Button>
         </View>
       )}
@@ -98,4 +135,4 @@ const LoginScreen = ({navigation}: any) => {
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;
