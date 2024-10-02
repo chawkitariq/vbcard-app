@@ -17,8 +17,6 @@ function ContactDetailScreen({route, navigation}: any) {
 
   const {contactId} = route.params;
 
-  console.log(contactId);
-
   const {isPending, data} = useQuery({
     queryKey: ['contacts', contactId],
     queryFn: () => ContactApiService.findOne(contactId),
@@ -99,8 +97,6 @@ function ContactDetailScreen({route, navigation}: any) {
       </View>
     );
   }
-
-  console.log(data?.contact);
 
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
