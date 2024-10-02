@@ -1,7 +1,15 @@
 import {useMutation} from '@tanstack/react-query';
 import {Formik} from 'formik';
 import {Text, View} from 'react-native';
-import {Button, HelperText, TextInput} from 'react-native-paper';
+import {
+  Button,
+  HelperText,
+  IconButton,
+  Portal,
+  Snackbar,
+  TextInput,
+  useTheme,
+} from 'react-native-paper';
 import {AuthApiService} from '../../services';
 import {useAuthStore} from '../../stores';
 import {AuthLoginResponsePayload} from '../../types';
@@ -16,17 +24,23 @@ const validationSchema = object().shape({
 });
 
 const LoginScreen = ({navigation}: any) => {
+  const theme = useTheme();
+
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
 
   const {login} = useAuthStore();
 
-  const {isPending, mutate: handleLogin} = useMutation({
+  const {
+    isPending,
+    isError,
+    reset,
+    mutate: handleLogin,
+  } = useMutation({
     mutationKey: ['login'],
     mutationFn: AuthApiService.login,
-    onSuccess: (payload: AuthLoginResponsePayload) => {
-      login(payload);
+    onSuccess: ({jwt}: AuthLoginResponsePayload) => {
+      login({jwt});
     },
-    onError: error => console.error(error),
   });
 
   return (
@@ -92,6 +106,15 @@ const LoginScreen = ({navigation}: any) => {
             loading={isPending}>
             Se connecter
           </Button>
+          <Portal>
+            <Snackbar
+              icon="close"
+              onIconPress={() => reset()}
+              visible={!!isError}
+              onDismiss={() => reset()}>
+              L'email ou le mot de passe sont invalides
+            </Snackbar>
+          </Portal>
         </View>
       )}
     </Formik>

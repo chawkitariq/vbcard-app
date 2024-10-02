@@ -9,6 +9,7 @@ import HomeFilterScreen from './home/filter';
 import ContactUpdateScreen from './contact/update';
 import QrCodeCameraScannerScreen from './qrcode-camera-scanner';
 import RegisterScreen from './auth/register';
+import SplashScreen from './splash';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,7 +17,7 @@ function Router() {
   const {isAuth} = useAuthStore();
 
   return (
-    <Stack.Navigator initialRouteName="Register">
+    <Stack.Navigator initialRouteName="Home">
       {!isAuth() ? (
         <>
           <Stack.Screen
@@ -29,6 +30,13 @@ function Router() {
           <Stack.Screen
             name="Register"
             component={RegisterScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Splash"
+            component={SplashScreen}
             options={{
               headerShown: false,
             }}
