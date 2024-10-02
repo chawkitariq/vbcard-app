@@ -6,7 +6,6 @@ import {Pressable, ScrollView, View} from 'react-native';
 import {
   Appbar,
   Button,
-  IconButton,
   List,
   Menu,
   TextInput,
@@ -27,6 +26,7 @@ const initialValues = {
   company: '',
   companyDepartement: '',
   companyTitle: '',
+  note: '',
   tels: [
     {
       value: '',
@@ -39,15 +39,30 @@ const initialValues = {
       label: 'Home',
     },
   ],
-  adrs: [],
-  urls: [],
-  socialProfiles: [],
+  adrs: [
+    {
+      value: '',
+      label: 'Home',
+    },
+  ],
+  urls: [
+    {
+      value: '',
+    },
+  ],
+  socialProfiles: [
+    {
+      value: '',
+      label: 'Home',
+    },
+  ],
 };
 
 function ContactCreateScreen({route, navigation}: any) {
   const theme = useTheme();
 
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isShowMore, setIsShowMore] = useState(false);
+
   const [isLabelMenuVisible, setIsLabelMenuVisible] = useState<{
     [key: string]: boolean;
   }>();
@@ -62,18 +77,37 @@ function ContactCreateScreen({route, navigation}: any) {
   });
 
   const handleSubmit = useCallback(
-    (data: any) => {
+    (data: typeof initialValues) => {
       const vcard = new vCard();
-      vcard.add('fb', 'Jean Dupont');
-      vcard.add('n', 'Dupont;Jean');
-      vcard.add('org', 'Meetdeal');
-      vcard.add('kind', 'individual');
-      vcard.add('note', 'Je connais la technique du tigre et de la grue.');
-      vcard.add('tel', '073373737', {type: 'uri', label: 'home'});
-      vcard.add('tel', '073373737', {type: 'uri', label: 'home'});
-      vcard.add('tel', '073373737', {type: 'uri', label: 'home'});
-      vcard.add('adr', ';;3 rus des Lys;Lyon;12;12345;France', {type: 'home'});
-      vcard.add('adr', ';;3 rus des Lys;Lyon;12;12345;France', {type: 'home'});
+      vcard
+        .add('version', '4.0')
+        .add('fn', `${data.firstName} ${data.lastName}`)
+        .add('org', data.company)
+        .add('title', data.companyTitle)
+        .add('note', data.note);
+
+      for (const tel of data.tels) {
+        vcard.add('tel', tel.value, {type: tel.label});
+      }
+
+      for (const email of data.emails) {
+        vcard.add('email', email.value, {type: email.label});
+      }
+
+      for (const adr of data.adrs) {
+        vcard.add('adr', adr.value, {type: adr.label});
+      }
+
+      for (const socialProfile of data.socialProfiles) {
+        vcard.add('socialProfile', socialProfile.value, {
+          type: socialProfile.label,
+        });
+      }
+
+      for (const url of data.urls) {
+        vcard.add('url', url.value);
+      }
+
       handleCreate({vcard: vcard.toString()});
     },
     [handleCreate],
@@ -85,9 +119,17 @@ function ContactCreateScreen({route, navigation}: any) {
     navigation.setOptions({
       header: () => (
         <Appbar.Header>
-          <Appbar.BackAction onPress={() => navigation.goBack()} />
+          <Appbar.Action icon="close" onPress={() => navigation.goBack()} />
           <Appbar.Content title="Nouveau Contact" />
-          <Button onPress={() => formRef?.current?.submitForm()}>Ok</Button>
+          <Button
+            mode="contained"
+            onPress={() => formRef?.current?.submitForm()}>
+            Ok
+          </Button>
+          <Appbar.Action
+            icon="dots-vertical"
+            onPress={() => navigation.goBack()}
+          />
         </Appbar.Header>
       ),
     });
@@ -103,7 +145,7 @@ function ContactCreateScreen({route, navigation}: any) {
         initialValues={initialValues}
         validateOnChange={true}
         onSubmit={handleSubmit}>
-        {({handleChange, handleBlur, handleSubmit, setFieldValue, values}) => (
+        {({handleChange, handleBlur, setFieldValue, values}) => (
           <View style={{padding: 16 * 1.5}}>
             <List.Section>
               <Pressable
@@ -115,7 +157,7 @@ function ContactCreateScreen({route, navigation}: any) {
             </List.Section>
 
             <List.Section title="Personnel" style={{gap: 16}}>
-              {isExpanded && (
+              {isShowMore && (
                 <TextInput
                   onChangeText={handleChange('namePrefix')}
                   onBlur={handleBlur('namePrefix')}
@@ -129,7 +171,7 @@ function ContactCreateScreen({route, navigation}: any) {
                 value={values.firstName}
                 label="Prénom"
               />
-              {isExpanded && (
+              {isShowMore && (
                 <TextInput
                   onChangeText={handleChange('middleName')}
                   onBlur={handleBlur('middleName')}
@@ -143,7 +185,7 @@ function ContactCreateScreen({route, navigation}: any) {
                 value={values.lastName}
                 label="Nom"
               />
-              {isExpanded && (
+              {isShowMore && (
                 <>
                   <TextInput
                     onChangeText={handleChange('nameSuffix')}
@@ -168,18 +210,22 @@ function ContactCreateScreen({route, navigation}: any) {
                 value={values.company}
                 label="Entreprise"
               />
-              <TextInput
-                onChangeText={handleChange('companyDepartement')}
-                onBlur={handleBlur('companyDepartement')}
-                value={values.companyDepartement}
-                label="Département"
-              />
-              <TextInput
-                onChangeText={handleChange('companyTitle')}
-                onBlur={handleBlur('companyTitle')}
-                value={values.companyTitle}
-                label="Poste"
-              />
+              {isShowMore && (
+                <>
+                  <TextInput
+                    onChangeText={handleChange('companyDepartement')}
+                    onBlur={handleBlur('companyDepartement')}
+                    value={values.companyDepartement}
+                    label="Département"
+                  />
+                  <TextInput
+                    onChangeText={handleChange('companyTitle')}
+                    onBlur={handleBlur('companyTitle')}
+                    value={values.companyTitle}
+                    label="Poste"
+                  />
+                </>
+              )}
             </List.Section>
 
             <FieldArray name="tels">
@@ -187,27 +233,13 @@ function ContactCreateScreen({route, navigation}: any) {
                 <List.Section title="Téléphone" style={{gap: 16}}>
                   {values.tels.map((tel, index) => (
                     <View key={index} style={{gap: 16}}>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          gap: 16,
-                        }}>
-                        <TextInput
-                          style={{flex: 1, flexGrow: 1}}
-                          onChangeText={handleChange(`tels.${index}.value`)}
-                          onBlur={handleBlur(`tels.${index}.value`)}
-                          value={tel.value}
-                          label="Téléphone"
-                        />
-                        <IconButton
-                          size={16}
-                          mode="contained-tonal"
-                          icon="close"
-                          onPress={() => remove(index)}
-                          disabled={values.tels.length <= 1}
-                        />
-                      </View>
+                      <TextInput
+                        style={{flex: 1, flexGrow: 1}}
+                        onChangeText={handleChange(`tels.${index}.value`)}
+                        onBlur={handleBlur(`tels.${index}.value`)}
+                        value={tel.value}
+                        label="Téléphone"
+                      />
                       <Menu
                         visible={!!isLabelMenuVisible?.[`tels.${index}`]}
                         onDismiss={() =>
@@ -255,27 +287,13 @@ function ContactCreateScreen({route, navigation}: any) {
                 <List.Section title="Adresse mail" style={{gap: 16}}>
                   {values.emails.map((email, index) => (
                     <View key={index} style={{gap: 16}}>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          gap: 16,
-                        }}>
-                        <TextInput
-                          style={{flex: 1, flexGrow: 1}}
-                          onChangeText={handleChange(`emails.${index}.value`)}
-                          onBlur={handleBlur(`emails.${index}.value`)}
-                          value={email.value}
-                          label="Adresse mail"
-                        />
-                        <IconButton
-                          size={16}
-                          mode="contained-tonal"
-                          icon="close"
-                          onPress={() => remove(index)}
-                          disabled={values.emails.length <= 1}
-                        />
-                      </View>
+                      <TextInput
+                        style={{flex: 1, flexGrow: 1}}
+                        onChangeText={handleChange(`emails.${index}.value`)}
+                        onBlur={handleBlur(`emails.${index}.value`)}
+                        value={email.value}
+                        label="Adresse mail"
+                      />
                       <Menu
                         visible={!!isLabelMenuVisible?.[`emails.${index}`]}
                         onDismiss={() =>
@@ -317,6 +335,172 @@ function ContactCreateScreen({route, navigation}: any) {
                 </List.Section>
               )}
             </FieldArray>
+
+            {!isShowMore && (
+              <Button onPress={() => setIsShowMore(true)}>Afficher tout</Button>
+            )}
+
+            {isShowMore && (
+              <>
+                <FieldArray name="adrs">
+                  {({remove, push}) => (
+                    <List.Section title="Adresses" style={{gap: 16}}>
+                      {values.adrs.map((adr, index) => (
+                        <View key={index} style={{gap: 16}}>
+                          <TextInput
+                            style={{flex: 1, flexGrow: 1}}
+                            onChangeText={handleChange(`adrs.${index}.value`)}
+                            onBlur={handleBlur(`adrs.${index}.value`)}
+                            value={adr.value}
+                            label="Boîte postale, Adresse étendue, Nom de rue, Ville, Région (ou état/province), Code postal, Pays"
+                          />
+                          <Menu
+                            visible={!!isLabelMenuVisible?.[`adrs.${index}`]}
+                            onDismiss={() =>
+                              setIsLabelMenuVisible({
+                                [`adrs.${index}`]: false,
+                              })
+                            }
+                            anchor={
+                              <Pressable
+                                onPress={() => {
+                                  setIsLabelMenuVisible({
+                                    [`adrs.${index}`]: true,
+                                  });
+                                }}>
+                                <TextInput
+                                  style={{width: '50%'}}
+                                  label="Label"
+                                  editable={false}
+                                  value={
+                                    adr.label.charAt(0).toUpperCase() +
+                                    adr.label.slice(1)
+                                  }
+                                  right={<TextInput.Icon icon="chevron-down" />}
+                                />
+                              </Pressable>
+                            }>
+                            {TYPES.map(type => (
+                              <Menu.Item
+                                onPress={() => {
+                                  setFieldValue(`adrs.${index}.label`, type);
+                                  setIsLabelMenuVisible(undefined);
+                                }}
+                                title={
+                                  type.charAt(0).toUpperCase() + type.slice(1)
+                                }
+                              />
+                            ))}
+                          </Menu>
+                        </View>
+                      ))}
+                    </List.Section>
+                  )}
+                </FieldArray>
+
+                <FieldArray name="socialProfiles">
+                  {({remove, push}) => (
+                    <List.Section title="Réseau sociaux" style={{gap: 16}}>
+                      {values.socialProfiles.map((socialProfile, index) => (
+                        <View key={index} style={{gap: 16}}>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              gap: 16,
+                            }}>
+                            <TextInput
+                              style={{flex: 1, flexGrow: 1}}
+                              onChangeText={handleChange(
+                                `socialProfiles.${index}.value`,
+                              )}
+                              onBlur={handleBlur(
+                                `socialProfiles.${index}.value`,
+                              )}
+                              value={socialProfile.value}
+                              label="Adresse mail"
+                            />
+                          </View>
+                          <Menu
+                            visible={
+                              !!isLabelMenuVisible?.[`socialProfiles.${index}`]
+                            }
+                            onDismiss={() =>
+                              setIsLabelMenuVisible({
+                                [`socialProfiles.${index}`]: false,
+                              })
+                            }
+                            anchor={
+                              <Pressable
+                                onPress={() => {
+                                  setIsLabelMenuVisible({
+                                    [`socialProfiles.${index}`]: true,
+                                  });
+                                }}>
+                                <TextInput
+                                  style={{width: '50%'}}
+                                  label="Label"
+                                  editable={false}
+                                  value={
+                                    socialProfile.label
+                                      .charAt(0)
+                                      .toUpperCase() +
+                                    socialProfile.label.slice(1)
+                                  }
+                                  right={<TextInput.Icon icon="chevron-down" />}
+                                />
+                              </Pressable>
+                            }>
+                            {TYPES.map(type => (
+                              <Menu.Item
+                                onPress={() => {
+                                  setFieldValue(
+                                    `socialProfiles.${index}.label`,
+                                    type,
+                                  );
+                                  setIsLabelMenuVisible(undefined);
+                                }}
+                                title={
+                                  type.charAt(0).toUpperCase() + type.slice(1)
+                                }
+                              />
+                            ))}
+                          </Menu>
+                        </View>
+                      ))}
+                    </List.Section>
+                  )}
+                </FieldArray>
+
+                <FieldArray name="urls">
+                  {({remove, push}) => (
+                    <List.Section title="Liens externe" style={{gap: 16}}>
+                      {values.urls.map((url, index) => (
+                        <View key={index} style={{gap: 16}}>
+                          <TextInput
+                            style={{flex: 1, flexGrow: 1}}
+                            onChangeText={handleChange(`urls.${index}.value`)}
+                            onBlur={handleBlur(`urls.${index}.value`)}
+                            value={url.value}
+                            label="lien"
+                          />
+                        </View>
+                      ))}
+                    </List.Section>
+                  )}
+                </FieldArray>
+
+                <List.Section title="Note">
+                  <TextInput
+                    multiline
+                    onChangeText={handleChange('note')}
+                    onBlur={handleBlur('note')}
+                    value={values.note}
+                    label="note"
+                  />
+                </List.Section>
+              </>
+            )}
           </View>
         )}
       </Formik>
