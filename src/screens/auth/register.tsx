@@ -1,7 +1,7 @@
 import {useMutation} from '@tanstack/react-query';
 import {Formik, FormikProps} from 'formik';
-import {Alert, Text, View} from 'react-native';
-import {Button, HelperText, TextInput} from 'react-native-paper';
+import {Alert, View} from 'react-native';
+import {Button, HelperText, Text, TextInput} from 'react-native-paper';
 import {AuthApiService} from '../../services';
 import {useCallback, useRef, useState} from 'react';
 import {object, ref, string} from 'yup';
