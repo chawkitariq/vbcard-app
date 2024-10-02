@@ -21,7 +21,7 @@ function Router() {
           name="Login"
           component={LoginScreen}
           options={{
-            headerTitle: 'Connexion',
+            headerShown: false,
           }}
         />
       ) : (

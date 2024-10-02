@@ -1,4 +1,4 @@
-import {useMutation, useQueryClient} from '@tanstack/react-query';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useCallback, useEffect, useState} from 'react';
 import {Alert, Share, View} from 'react-native';
 import {
@@ -10,11 +10,20 @@ import {
   Text,
 } from 'react-native-paper';
 import {ContactApiService} from '../../services';
+import vCard from 'vcf';
 
 function ContactDetailScreen({route, navigation}: any) {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   const {contactId} = route.params;
+
+  console.log(contactId);
+
+  const {isPending, data} = useQuery({
+    queryKey: ['contacts', contactId],
+    queryFn: () => ContactApiService.findOne(contactId),
+    enabled: !!contactId,
+  });
 
   const queryClient = useQueryClient();
 
@@ -77,6 +86,21 @@ function ContactDetailScreen({route, navigation}: any) {
       ),
     });
   }, [navigation, contactId, isMenuVisible]);
+
+  if (isPending) {
+    return (
+      <View
+        style={{
+          minHeight: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
+
+  console.log(data?.contact);
 
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>

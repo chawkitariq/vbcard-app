@@ -9,6 +9,11 @@ export class ContactApiService {
     return data as {contacts: Contact[]};
   }
 
+  public static async findOne(id: string) {
+    const {data} = await api.get(`/contacts/${id}`);
+    return data as {contact: Contact};
+  }
+
   public static async create(payload: CreateContactPayload) {
     await api.post('/contacts', payload);
   }
