@@ -11,14 +11,14 @@ import {
   Text,
   useTheme,
 } from 'react-native-paper';
-import {ContactApiService, ContactFollowingApiService} from '../../services';
+import {ContactFollowingApiService} from '../../services';
 
 function ContactFollowingDetailScreen({route, navigation}: any) {
   const {contactId} = route.params;
 
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
-  const {isPending, data: contact = {}} = useQuery({
+  const {isPending, data: contact} = useQuery({
     queryKey: ['contacts', contactId],
     queryFn: () => ContactFollowingApiService.findMeOne(contactId),
     enabled: !!contactId,
@@ -26,25 +26,16 @@ function ContactFollowingDetailScreen({route, navigation}: any) {
 
   const queryClient = useQueryClient();
 
-  const {isPending: isDeletePending, mutate: handleContactDelete} = useMutation(
-    {
-      mutationKey: ['contacts', contactId],
-      mutationFn: ContactApiService.delete,
+  const {isPending: isDeletePending, mutate: handleDeleteFollowing} =
+    useMutation({
+      mutationKey: ['followings', contactId],
+      mutationFn: ContactFollowingApiService.delete,
       onSuccess: () => {
-        queryClient.invalidateQueries({queryKey: ['contacts']});
+        queryClient.invalidateQueries({queryKey: ['followings']});
         navigation.goBack();
       },
       onError: error => console.error(error),
-    },
-  );
-
-  const handleEditAction = useCallback(
-    () =>
-      navigation.navigate('ContactUpdate', {
-        contactId,
-      }),
-    [contactId],
-  );
+    });
 
   const openMenu = useCallback(() => setIsMenuVisible(true), []);
   const closeMenu = useCallback(() => setIsMenuVisible(false), []);
@@ -57,13 +48,21 @@ function ContactFollowingDetailScreen({route, navigation}: any) {
   }, [contactId]);
 
   const handleDeleteAction = useCallback(() => {
-    Alert.alert('Suppression', 'Supprimer la resource ?', [
-      {
-        text: 'Annuler',
-        style: 'cancel',
-      },
-      {text: 'Supprimer', onPress: () => handleContactDelete(contactId)},
-    ]);
+    Alert.alert(
+      'Suppression',
+      'Êtes-vous sur de vouloirs effectués cette action ?',
+      [
+        {
+          text: 'Annuler',
+          style: 'cancel',
+        },
+        {
+          text: 'Supprimer',
+          style: 'destructive',
+          onPress: () => handleDeleteFollowing(contactId),
+        },
+      ],
+    );
     closeMenu();
   }, [contactId]);
 
@@ -75,12 +74,11 @@ function ContactFollowingDetailScreen({route, navigation}: any) {
         <Appbar.Header>
           <Appbar.BackAction onPress={() => navigation.goBack()} />
           <Appbar.Content title="" />
-          <Appbar.Action icon="pencil" onPress={handleEditAction} />
+          <Appbar.Action onPress={handleShareAction} icon="share" />
           <Menu
             visible={isMenuVisible}
             onDismiss={closeMenu}
             anchor={<Appbar.Action icon="dots-vertical" onPress={openMenu} />}>
-            <Menu.Item onPress={handleShareAction} title="Partager" />
             <Menu.Item onPress={handleDeleteAction} title="Supprimer" />
           </Menu>
         </Appbar.Header>
@@ -88,7 +86,7 @@ function ContactFollowingDetailScreen({route, navigation}: any) {
     });
   }, [navigation, contactId, isMenuVisible]);
 
-  if (isPending) {
+  if (isPending || isDeletePending) {
     return (
       <View
         style={{
@@ -108,7 +106,7 @@ function ContactFollowingDetailScreen({route, navigation}: any) {
         title="Afficher le Qr-Code"
         onPress={() =>
           navigation.navigate('QrCodeDetail', {
-            contactId,
+            contactId: contact?.id,
           })
         }
         right={props => <List.Icon {...props} icon="arrow-right" />}

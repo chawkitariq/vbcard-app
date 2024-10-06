@@ -11,4 +11,9 @@ export class ContactFollowingApiService {
     const {data} = await api.get(`/users/me/followings/${id}`);
     return data as Contact;
   }
+
+  public static async delete(id: string) {
+    const {data} = await api.delete(`/users/me/followings/${id}`);
+    return data;
+  }
 }
