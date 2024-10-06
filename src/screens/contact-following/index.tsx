@@ -5,7 +5,7 @@ import {FlashList} from '@shopify/flash-list';
 import {ContactFollowingApiService} from '../../services';
 import {HomeHeaderLayout} from '../../layouts';
 
-function HomeScreen(props: any) {
+function ContactFollowingIndexScreen(props: any) {
   const {route, navigation} = props;
 
   const {
@@ -69,7 +69,7 @@ function HomeScreen(props: any) {
                     },
               ]}
               onPress={() =>
-                navigation.navigate('ContactDetail', {
+                navigation.navigate('ContactFollowingDetail', {
                   contactId: item.id,
                 })
               }></Pressable>
@@ -80,4 +80,4 @@ function HomeScreen(props: any) {
   );
 }
 
-export default HomeScreen;
+export default ContactFollowingIndexScreen;

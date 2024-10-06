@@ -10,6 +10,7 @@ import ContactUpdateScreen from './contact/update';
 import QrCodeCameraScannerScreen from './qr-code/camera-scanner';
 import RegisterScreen from './auth/register';
 import SplashScreen from './splash';
+import ContactFollowingDetailScreen from './contact-following/detail';
 
 const Stack = createNativeStackNavigator();
 
@@ -68,6 +69,14 @@ function Router() {
             }}
           />
           <Stack.Screen
+            name="ContactUpdate"
+            component={ContactUpdateScreen}
+            options={{
+              animation: 'simple_push',
+              presentation: 'modal',
+            }}
+          />
+          <Stack.Screen
             name="ContactDetail"
             component={ContactDetailScreen}
             options={{
@@ -76,8 +85,8 @@ function Router() {
             }}
           />
           <Stack.Screen
-            name="ContactUpdate"
-            component={ContactUpdateScreen}
+            name="ContactFollowingDetail"
+            component={ContactFollowingDetailScreen}
             options={{
               animation: 'simple_push',
               presentation: 'modal',
