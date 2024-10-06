@@ -7,7 +7,7 @@ import LoginScreen from './auth/login';
 import {useAuthStore} from '../stores';
 import HomeFilterScreen from './home/filter';
 import ContactUpdateScreen from './contact/update';
-import QrCodeCameraScannerScreen from './qrcode-camera-scanner';
+import QrCodeCameraScannerScreen from './qr-code/camera-scanner';
 import RegisterScreen from './auth/register';
 import SplashScreen from './splash';
 
