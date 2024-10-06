@@ -2,6 +2,7 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import ContactIndexScreen from './contact';
 import {Icon} from 'react-native-paper';
 import ContactFollowingIndexScreen from './contact-following';
+import AccountIndexScreen from './account';
 
 const BottomTab = createMaterialBottomTabNavigator();
 
@@ -19,7 +20,18 @@ function BottomTabScreen() {
       <BottomTab.Screen
         name="ContactIndex"
         component={ContactIndexScreen}
-        options={{tabBarIcon: () => <Icon size={24} source="card-multiple" />}}
+        options={{
+          title: 'Bibliothèque',
+          tabBarIcon: () => <Icon size={24} source="card-multiple" />,
+        }}
+      />
+      <BottomTab.Screen
+        name="AccountIndex"
+        component={AccountIndexScreen}
+        options={{
+          title: 'Compte',
+          tabBarIcon: () => <Icon size={24} source="account" />,
+        }}
       />
     </BottomTab.Navigator>
   );
