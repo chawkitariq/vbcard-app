@@ -1,18 +1,31 @@
-import React from 'react';
-import {IconButton, useTheme} from 'react-native-paper';
+import React, {useEffect} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {Appbar, useTheme} from 'react-native-paper';
+import QRCode from 'react-native-qrcode-svg';
 
-function QrCodeDetailScreen({navigation}: any) {
+function QrCodeDetailScreen({route, navigation}: any) {
+  const {contactId} = route.params;
+
   const theme = useTheme();
 
+  useEffect(() => {
+    navigation.setOptions({
+      header: () => (
+        <Appbar.Header>
+          <Appbar.BackAction onPress={() => navigation.goBack()} />
+        </Appbar.Header>
+      ),
+    });
+  }, [navigation, contactId]);
+
   return (
-    <>
-      <IconButton
-        style={{position: 'relative', zIndex: 999}}
-        icon="close"
-        onPress={() => navigation.goBack()}
-        iconColor={theme.colors.surface}
-      />
-    </>
+    <View
+      style={[
+        StyleSheet.absoluteFill,
+        {alignItems: 'center', justifyContent: 'center'},
+      ]}>
+      <QRCode value={contactId} size={250} />
+    </View>
   );
 }
 

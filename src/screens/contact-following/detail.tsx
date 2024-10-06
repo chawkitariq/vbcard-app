@@ -5,24 +5,24 @@ import {
   ActivityIndicator,
   Appbar,
   Dialog,
+  List,
   Menu,
   Portal,
   Text,
+  useTheme,
 } from 'react-native-paper';
 import {ContactApiService, ContactFollowingApiService} from '../../services';
 
 function ContactFollowingDetailScreen({route, navigation}: any) {
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
-
   const {contactId} = route.params;
+
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   const {isPending, data: contact = {}} = useQuery({
     queryKey: ['contacts', contactId],
     queryFn: () => ContactFollowingApiService.findMeOne(contactId),
     enabled: !!contactId,
   });
-
-  console.log(contact);
 
   const queryClient = useQueryClient();
 
@@ -67,6 +67,8 @@ function ContactFollowingDetailScreen({route, navigation}: any) {
     closeMenu();
   }, [contactId]);
 
+  const theme = useTheme();
+
   useEffect(() => {
     navigation.setOptions({
       header: () => (
@@ -101,6 +103,16 @@ function ContactFollowingDetailScreen({route, navigation}: any) {
 
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <List.Item
+        contentStyle={{borderColor: theme.colors.secondaryContainer}}
+        title="Afficher le Qr-Code"
+        onPress={() =>
+          navigation.navigate('QrCodeDetail', {
+            contactId,
+          })
+        }
+        right={props => <List.Icon {...props} icon="arrow-right" />}
+      />
       <Portal>
         <Dialog visible={isDeletePending}>
           <Dialog.Title>Alert</Dialog.Title>

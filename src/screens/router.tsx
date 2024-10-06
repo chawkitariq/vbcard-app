@@ -11,6 +11,7 @@ import QrCodeCameraScannerScreen from './qr-code/camera-scanner';
 import RegisterScreen from './auth/register';
 import SplashScreen from './splash';
 import ContactFollowingDetailScreen from './contact-following/detail';
+import QrCodeDetailScreen from './qr-code/detail';
 
 const Stack = createNativeStackNavigator();
 
@@ -87,6 +88,14 @@ function Router() {
           <Stack.Screen
             name="ContactFollowingDetail"
             component={ContactFollowingDetailScreen}
+            options={{
+              animation: 'simple_push',
+              presentation: 'modal',
+            }}
+          />
+          <Stack.Screen
+            name="QrCodeDetail"
+            component={QrCodeDetailScreen}
             options={{
               animation: 'simple_push',
               presentation: 'modal',
