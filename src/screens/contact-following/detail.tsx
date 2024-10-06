@@ -1,6 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useCallback, useEffect, useState} from 'react';
-import {Alert, Share, View} from 'react-native';
+import {Alert, ScrollView, Share, View} from 'react-native';
 import {
   ActivityIndicator,
   Appbar,
@@ -12,6 +12,7 @@ import {
   useTheme,
 } from 'react-native-paper';
 import {ContactFollowingApiService} from '../../services';
+import {ContactCard} from '../../components';
 
 function ContactFollowingDetailScreen({route, navigation}: any) {
   const {contactId} = route.params;
@@ -100,27 +101,34 @@ function ContactFollowingDetailScreen({route, navigation}: any) {
   }
 
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <List.Item
-        contentStyle={{borderColor: theme.colors.secondaryContainer}}
-        title="Afficher le Qr-Code"
-        onPress={() =>
-          navigation.navigate('QrCodeDetail', {
-            contactId: contact?.id,
-          })
-        }
-        right={props => <List.Icon {...props} icon="arrow-right" />}
-      />
-      <Portal>
-        <Dialog visible={isDeletePending}>
-          <Dialog.Title>Alert</Dialog.Title>
-          <Dialog.Content>
-            <Text variant="bodyMedium">This is simple dialog</Text>
-            <ActivityIndicator />
-          </Dialog.Content>
-        </Dialog>
-      </Portal>
-    </View>
+    <ScrollView style={{minHeight: '100%', padding: 16}}>
+      <View style={{gap: 16}}>
+        <ContactCard layout={contact?.layout} />
+        <List.Item
+          style={{
+            borderWidth: 1,
+            borderColor: theme.colors.surfaceVariant,
+            borderRadius: theme.roundness,
+          }}
+          title="Afficher le Qr-Code"
+          onPress={() =>
+            navigation.navigate('QrCodeDetail', {
+              contactId: contact?.id,
+            })
+          }
+          right={props => <List.Icon {...props} icon="chevron-right" />}
+        />
+        <Portal>
+          <Dialog visible={isDeletePending}>
+            <Dialog.Title>Alert</Dialog.Title>
+            <Dialog.Content>
+              <Text variant="bodyMedium">This is simple dialog</Text>
+              <ActivityIndicator />
+            </Dialog.Content>
+          </Dialog>
+        </Portal>
+      </View>
+    </ScrollView>
   );
 }
 

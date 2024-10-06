@@ -1,9 +1,10 @@
 import {useQuery} from '@tanstack/react-query';
 import {Pressable, RefreshControl, View} from 'react-native';
-import {ActivityIndicator, DefaultTheme} from 'react-native-paper';
+import {ActivityIndicator, Appbar, DefaultTheme} from 'react-native-paper';
 import {FlashList} from '@shopify/flash-list';
 import {ContactFollowingApiService} from '../../services';
 import {HomeHeaderLayout} from '../../layouts';
+import {ContactCard} from '../../components';
 
 function ContactFollowingIndexScreen(props: any) {
   const {route, navigation} = props;
@@ -32,7 +33,13 @@ function ContactFollowingIndexScreen(props: any) {
 
   return (
     <View>
-      <HomeHeaderLayout {...props} />
+      <Appbar.Header>
+        <Appbar.Content title="" />
+        <Appbar.Action
+          icon="qrcode-scan"
+          onPress={() => navigation.navigate('QrCodeCameraScanner')}
+        />
+      </Appbar.Header>
       <View
         style={{
           minHeight: '100%',
@@ -56,9 +63,6 @@ function ContactFollowingIndexScreen(props: any) {
               style={[
                 {
                   flexGrow: 1,
-                  aspectRatio: 4 / 3,
-                  borderRadius: 16 / 3,
-                  backgroundColor: DefaultTheme.colors.surfaceVariant,
                 },
                 index % 2 === 0
                   ? {
@@ -72,7 +76,9 @@ function ContactFollowingIndexScreen(props: any) {
                 navigation.navigate('ContactFollowingDetail', {
                   contactId: item.id,
                 })
-              }></Pressable>
+              }>
+              <ContactCard size="small" />
+            </Pressable>
           )}
         />
       </View>

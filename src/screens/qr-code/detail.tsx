@@ -12,7 +12,7 @@ function QrCodeDetailScreen({route, navigation}: any) {
     navigation.setOptions({
       header: () => (
         <Appbar.Header>
-          <Appbar.BackAction onPress={() => navigation.goBack()} />
+          <Appbar.Action icon="close" onPress={() => navigation.goBack()} />
         </Appbar.Header>
       ),
     });
