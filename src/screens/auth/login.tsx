@@ -38,8 +38,8 @@ const LoginScreen = ({navigation}: any) => {
   } = useMutation({
     mutationKey: ['login'],
     mutationFn: AuthApiService.login,
-    onSuccess: ({jwt}: AuthLoginResponsePayload) => {
-      login({jwt});
+    onSuccess: (payload: AuthLoginResponsePayload) => {
+      login(payload);
     },
   });
 

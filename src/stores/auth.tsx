@@ -1,30 +1,28 @@
 import {create} from 'zustand';
+import {AuthLoginResponsePayload} from '../types';
 
 type State = {
-  jwt: string;
-  user: {
-    id: string;
-  };
+  accessToken: string;
+  expiresIn?: number;
+  userId: string;
 };
-
-type LoginActionPayload = {jwt: string};
 
 type Action = {
   isAuth: () => boolean;
-  login: (payload: LoginActionPayload) => void;
+  login: (payload: AuthLoginResponsePayload) => void;
   logout: () => void;
 };
 
 const initialState: State = {
-  jwt: '',
-  user: {
-    id: '',
-  },
+  accessToken: '',
+  expiresIn: undefined,
+  userId: '',
 };
 
 export const useAuthStore = create<State & Action>((set, get) => ({
   ...initialState,
-  isAuth: () => !!get().jwt,
-  login: ({jwt}) => set(() => ({jwt})),
+  isAuth: () => !!get().accessToken,
+  login: ({access_token: accessToken, expires_in: expiresIn}) =>
+    set(() => ({accessToken, expiresIn})),
   logout: () => set(() => initialState),
 }));
