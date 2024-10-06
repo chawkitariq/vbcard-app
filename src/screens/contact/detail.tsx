@@ -9,7 +9,7 @@ import {
   Portal,
   Text,
 } from 'react-native-paper';
-import {ContactApiService} from '../../services';
+import {ContactApiService, ContactFollowingApiService} from '../../services';
 import vCard from 'vcf';
 
 function ContactDetailScreen({route, navigation}: any) {
@@ -17,11 +17,13 @@ function ContactDetailScreen({route, navigation}: any) {
 
   const {contactId} = route.params;
 
-  const {isPending, data} = useQuery({
+  const {isPending, data: contact = {}} = useQuery({
     queryKey: ['contacts', contactId],
-    queryFn: () => ContactApiService.findOne(contactId),
+    queryFn: () => ContactFollowingApiService.findMeOne(contactId),
     enabled: !!contactId,
   });
+
+  console.log(contact);
 
   const queryClient = useQueryClient();
 

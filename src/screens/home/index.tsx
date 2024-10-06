@@ -1,17 +1,20 @@
 import {useQuery} from '@tanstack/react-query';
 import {Pressable, RefreshControl, View} from 'react-native';
-import {ActivityIndicator, DefaultTheme, MD3Colors} from 'react-native-paper';
+import {ActivityIndicator, DefaultTheme} from 'react-native-paper';
 import {FlashList} from '@shopify/flash-list';
-import {ContactFollowerApiService} from '../../services';
+import {ContactFollowingApiService} from '../../services';
 import {HomeHeaderLayout} from '../../layouts';
-import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 
-function HomeScreen(props: NativeStackHeaderProps) {
+function HomeScreen(props: any) {
   const {route, navigation} = props;
 
-  const {isPending, data, refetch} = useQuery({
-    queryKey: ['repoData'],
-    queryFn: ContactFollowerApiService.findMeFollowings,
+  const {
+    isPending,
+    data: contacts = [],
+    refetch,
+  } = useQuery({
+    queryKey: ['followings'],
+    queryFn: ContactFollowingApiService.findMeAll,
   });
 
   if (isPending) {
@@ -38,7 +41,7 @@ function HomeScreen(props: NativeStackHeaderProps) {
           gap: 16,
         }}>
         <FlashList
-          data={data?.contacts || []}
+          data={contacts}
           estimatedItemSize={16 * 10}
           numColumns={2}
           refreshControl={
