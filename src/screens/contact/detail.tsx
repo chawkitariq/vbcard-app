@@ -1,6 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {useCallback, useEffect, useState} from 'react';
-import {Alert, Share, View} from 'react-native';
+import {Alert, ScrollView, Share, View} from 'react-native';
 import {
   ActivityIndicator,
   Appbar,
@@ -11,19 +11,18 @@ import {
 } from 'react-native-paper';
 import {ContactApiService, ContactFollowingApiService} from '../../services';
 import vCard from 'vcf';
+import {ContactCard} from '../../components';
 
 function ContactDetailScreen({route, navigation}: any) {
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
-
   const {contactId} = route.params;
 
-  const {isPending, data: contact = {}} = useQuery({
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+
+  const {isPending, data: contact} = useQuery({
     queryKey: ['contacts', contactId],
-    queryFn: () => ContactFollowingApiService.findMeOne(contactId),
+    queryFn: () => ContactApiService.findOne(contactId),
     enabled: !!contactId,
   });
-
-  console.log(contact);
 
   const queryClient = useQueryClient();
 
@@ -63,7 +62,11 @@ function ContactDetailScreen({route, navigation}: any) {
         text: 'Annuler',
         style: 'cancel',
       },
-      {text: 'Supprimer', onPress: () => handleContactDelete(contactId)},
+      {
+        text: 'Supprimer',
+        style: 'destructive',
+        onPress: () => handleContactDelete(contactId),
+      },
     ]);
     closeMenu();
   }, [contactId]);
@@ -101,17 +104,9 @@ function ContactDetailScreen({route, navigation}: any) {
   }
 
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Portal>
-        <Dialog visible={isDeletePending}>
-          <Dialog.Title>Alert</Dialog.Title>
-          <Dialog.Content>
-            <Text variant="bodyMedium">This is simple dialog</Text>
-            <ActivityIndicator />
-          </Dialog.Content>
-        </Dialog>
-      </Portal>
-    </View>
+    <ScrollView style={{minHeight: '100%', padding: 16}}>
+      <ContactCard />
+    </ScrollView>
   );
 }
 

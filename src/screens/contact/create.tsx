@@ -1,4 +1,4 @@
-import {useMutation} from '@tanstack/react-query';
+import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {FieldArray, Formik, FormikProps} from 'formik';
 import React, {useEffect, useRef} from 'react';
 import {useCallback, useState} from 'react';
@@ -67,10 +67,15 @@ function ContactCreateScreen({route, navigation}: any) {
     [key: string]: boolean;
   }>();
 
+  const queryClient = useQueryClient();
+
   const {isPending, mutate: handleCreate} = useMutation({
     mutationKey: ['contacts'],
     mutationFn: ContactApiService.create,
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['contacts'],
+      });
       navigation.goBack();
     },
     onError: error => console.error(error),
