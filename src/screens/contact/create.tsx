@@ -14,6 +14,7 @@ import {
 } from 'react-native-paper';
 import vCard from 'vcf';
 import {ContactApiService} from '../../services';
+import {ContactCard} from '../../components';
 
 const TYPES = ['mobile', 'home', 'work', 'other'];
 
@@ -154,126 +155,132 @@ function ContactCreateScreen({route, navigation}: any) {
         onSubmit={handleSubmit}>
         {({handleChange, handleBlur, setFieldValue, values}) => (
           <>
-            <List.Section>
-              <Pressable
-                style={{
-                  aspectRatio: 16 / 9,
-                  borderRadius: theme.roundness,
-                  backgroundColor: theme.colors.surfaceVariant,
-                }}></Pressable>
-            </List.Section>
+            <Pressable>
+              <ContactCard />
+            </Pressable>
 
-            <List.Section title="Personnel" style={{gap: 16}}>
-              {isShowPersonalMore && (
-                <View style={{flexDirection: 'row'}}>
-                  <IconButton icon="account" />
-                  <TextInput
-                    style={{flex: 1}}
-                    onChangeText={handleChange('namePrefix')}
-                    onBlur={handleBlur('namePrefix')}
-                    value={values.namePrefix}
-                    label="Prefix"
-                  />
-                  <IconButton
-                    icon="chevron-up"
-                    onPress={() => setIsShowPersonalMore(false)}
-                  />
-                </View>
-              )}
+            {isShowPersonalMore && (
               <View style={{flexDirection: 'row'}}>
-                <IconButton
-                  icon="account"
-                  style={[isShowPersonalMore && {opacity: 0}]}
-                />
+                <IconButton icon="account" />
                 <TextInput
                   style={{flex: 1}}
-                  onChangeText={handleChange('firstName')}
-                  onBlur={handleBlur('firstName')}
-                  value={values.firstName}
-                  label="Prénom"
+                  onChangeText={handleChange('namePrefix')}
+                  onBlur={handleBlur('namePrefix')}
+                  value={values.namePrefix}
+                  label="Prefix"
                 />
                 <IconButton
-                  icon="chevron-down"
-                  style={[isShowPersonalMore && {opacity: 0}]}
-                  onPress={() => setIsShowPersonalMore(true)}
+                  icon="chevron-up"
+                  onPress={() => setIsShowPersonalMore(false)}
                 />
               </View>
-              {isShowPersonalMore && (
-                <View style={{flexDirection: 'row'}}>
-                  <IconButton icon="account" style={{opacity: 0}} />
-                  <TextInput
-                    style={{flex: 1}}
-                    onChangeText={handleChange('middleName')}
-                    onBlur={handleBlur('middleName')}
-                    value={values.middleName}
-                    label="Deuxième prénom"
-                  />
-                  <IconButton icon="chevron-down" style={{opacity: 0}} />
-                </View>
-              )}
+            )}
+            <View style={{flexDirection: 'row'}}>
+              <IconButton
+                icon="account"
+                style={[isShowPersonalMore && {opacity: 0}]}
+              />
+              <TextInput
+                style={{flex: 1}}
+                onChangeText={handleChange('firstName')}
+                onBlur={handleBlur('firstName')}
+                value={values.firstName}
+                label="Prénom"
+              />
+              <IconButton
+                icon="chevron-down"
+                style={[isShowPersonalMore && {opacity: 0}]}
+                onPress={() => setIsShowPersonalMore(true)}
+              />
+            </View>
+            {isShowPersonalMore && (
               <View style={{flexDirection: 'row'}}>
                 <IconButton icon="account" style={{opacity: 0}} />
                 <TextInput
                   style={{flex: 1}}
-                  onChangeText={handleChange('lastName')}
-                  onBlur={handleBlur('lastName')}
-                  value={values.lastName}
-                  label="Nom"
+                  onChangeText={handleChange('middleName')}
+                  onBlur={handleBlur('middleName')}
+                  value={values.middleName}
+                  label="Deuxième prénom"
                 />
                 <IconButton icon="chevron-down" style={{opacity: 0}} />
               </View>
-              {isShowPersonalMore && (
-                <>
-                  <View style={{flexDirection: 'row'}}>
-                    <IconButton icon="account" style={{opacity: 0}} />
-                    <TextInput
-                      style={{flex: 1}}
-                      onChangeText={handleChange('nameSuffix')}
-                      onBlur={handleBlur('nameSuffix')}
-                      value={values.nameSuffix}
-                      label="Suffixe"
-                    />
-                    <IconButton icon="chevron-down" style={{opacity: 0}} />
-                  </View>
-                  <View style={{flexDirection: 'row'}}>
-                    <IconButton icon="account" style={{opacity: 0}} />
-                    <TextInput
-                      style={{flex: 1}}
-                      onChangeText={handleChange('nickName')}
-                      onBlur={handleBlur('nickName')}
-                      value={values.nickName}
-                      label="Surnom"
-                    />
-                    <IconButton icon="chevron-down" style={{opacity: 0}} />
-                  </View>
-                </>
-              )}
-            </List.Section>
-
-            <List.Section title="Entreprise" style={{gap: 16}}>
+            )}
+            <View style={{flexDirection: 'row'}}>
+              <IconButton icon="account" style={{opacity: 0}} />
               <TextInput
+                style={{flex: 1}}
+                onChangeText={handleChange('lastName')}
+                onBlur={handleBlur('lastName')}
+                value={values.lastName}
+                label="Nom"
+              />
+              <IconButton icon="chevron-down" style={{opacity: 0}} />
+            </View>
+            {isShowPersonalMore && (
+              <>
+                <View style={{flexDirection: 'row'}}>
+                  <IconButton icon="account" style={{opacity: 0}} />
+                  <TextInput
+                    style={{flex: 1}}
+                    onChangeText={handleChange('nameSuffix')}
+                    onBlur={handleBlur('nameSuffix')}
+                    value={values.nameSuffix}
+                    label="Suffixe"
+                  />
+                  <IconButton icon="chevron-down" style={{opacity: 0}} />
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                  <IconButton icon="account" style={{opacity: 0}} />
+                  <TextInput
+                    style={{flex: 1}}
+                    onChangeText={handleChange('nickName')}
+                    onBlur={handleBlur('nickName')}
+                    value={values.nickName}
+                    label="Surnom"
+                  />
+                  <IconButton icon="chevron-down" style={{opacity: 0}} />
+                </View>
+              </>
+            )}
+
+            <View style={{flexDirection: 'row'}}>
+              <IconButton icon="domain" />
+              <TextInput
+                style={{flex: 1}}
                 onChangeText={handleChange('company')}
                 onBlur={handleBlur('company')}
                 value={values.company}
                 label="Entreprise"
               />
-              {isShowMore && (
-                <>
+              <IconButton icon="account" style={{opacity: 0}} />
+            </View>
+            {isShowMore && (
+              <>
+                <View style={{flexDirection: 'row'}}>
+                  <IconButton icon="domain" style={{opacity: 0}} />
                   <TextInput
+                    style={{flex: 1}}
                     onChangeText={handleChange('companyDepartement')}
                     onBlur={handleBlur('companyDepartement')}
                     value={values.companyDepartement}
                     label="Département"
                   />
+                  <IconButton icon="account" style={{opacity: 0}} />
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                  <IconButton icon="domain" style={{opacity: 0}} />
                   <TextInput
+                    style={{flex: 1}}
                     onChangeText={handleChange('companyTitle')}
                     onBlur={handleBlur('companyTitle')}
                     value={values.companyTitle}
                     label="Poste"
                   />
-                </>
-              )}
-            </List.Section>
+                  <IconButton icon="account" style={{opacity: 0}} />
+                </View>
+              </>
+            )}
 
             <FieldArray name="tels">
               {({remove, push}) => (
