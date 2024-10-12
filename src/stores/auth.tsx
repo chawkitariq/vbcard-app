@@ -2,6 +2,7 @@ import {create} from 'zustand';
 import {AuthLoginResponsePayload} from '../types';
 import {createJSONStorage, persist} from 'zustand/middleware';
 import {zustandStorageService} from '../services';
+import {isExpired} from '../utils';
 
 type State = {
   accessToken: string;
@@ -25,7 +26,7 @@ export const useAuthStore = create(
   persist<State & Action>(
     (set, get) => ({
       ...initialState,
-      isAuth: () => !!get().accessToken,
+      isAuth: () => isExpired(get().expiresIn as number),
       login: ({access_token: accessToken, expires_in: expiresIn}) =>
         set(() => ({accessToken, expiresIn})),
       logout: () => set(() => initialState),
