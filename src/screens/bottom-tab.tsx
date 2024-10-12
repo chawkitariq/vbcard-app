@@ -13,8 +13,8 @@ function BottomTabScreen() {
         name="Home"
         component={ContactFollowingIndexScreen}
         options={{
-          title: 'Accueil',
-          tabBarIcon: () => <Icon size={24} source="home" />,
+          title: 'Contacts',
+          tabBarIcon: () => <Icon size={24} source="contacts" />,
         }}
       />
       <BottomTab.Screen
