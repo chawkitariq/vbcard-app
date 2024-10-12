@@ -37,10 +37,6 @@ const initialValues = {
       value: '',
       label: VCARD_TYPES_LABLES[VCARD_TYPES.HOME],
     },
-    {
-      value: '',
-      label: VCARD_TYPES_LABLES[VCARD_TYPES.HOME],
-    },
   ],
   emails: [
     {
@@ -74,7 +70,6 @@ function ContactCreateScreen({route, navigation}: any) {
   const theme = useTheme();
 
   const [isShowPersonalMore, setIsShowPersonalMore] = useState(false);
-  const [isShowMore, setIsShowMore] = useState(false);
 
   const [isLabelMenuVisible, setIsLabelMenuVisible] = useState<{
     [key: string]: boolean;
@@ -265,32 +260,28 @@ function ContactCreateScreen({route, navigation}: any) {
               />
               <IconButton icon="account" style={{opacity: 0}} />
             </View>
-            {isShowMore && (
-              <>
-                <View style={{flexDirection: 'row'}}>
-                  <IconButton icon="domain" style={{opacity: 0}} />
-                  <TextInput
-                    style={{flex: 1}}
-                    onChangeText={handleChange('companyDepartement')}
-                    onBlur={handleBlur('companyDepartement')}
-                    value={values.companyDepartement}
-                    label="Département"
-                  />
-                  <IconButton icon="account" style={{opacity: 0}} />
-                </View>
-                <View style={{flexDirection: 'row'}}>
-                  <IconButton icon="domain" style={{opacity: 0}} />
-                  <TextInput
-                    style={{flex: 1}}
-                    onChangeText={handleChange('companyTitle')}
-                    onBlur={handleBlur('companyTitle')}
-                    value={values.companyTitle}
-                    label="Poste"
-                  />
-                  <IconButton icon="account" style={{opacity: 0}} />
-                </View>
-              </>
-            )}
+            <View style={{flexDirection: 'row'}}>
+              <IconButton icon="domain" style={{opacity: 0}} />
+              <TextInput
+                style={{flex: 1}}
+                onChangeText={handleChange('companyDepartement')}
+                onBlur={handleBlur('companyDepartement')}
+                value={values.companyDepartement}
+                label="Département"
+              />
+              <IconButton icon="account" style={{opacity: 0}} />
+            </View>
+            <View style={{flexDirection: 'row'}}>
+              <IconButton icon="domain" style={{opacity: 0}} />
+              <TextInput
+                style={{flex: 1}}
+                onChangeText={handleChange('companyTitle')}
+                onBlur={handleBlur('companyTitle')}
+                value={values.companyTitle}
+                label="Poste"
+              />
+              <IconButton icon="account" style={{opacity: 0}} />
+            </View>
 
             <FieldArray name="tels">
               {({remove, push}) => (
