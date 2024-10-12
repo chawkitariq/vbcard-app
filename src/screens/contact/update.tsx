@@ -14,7 +14,7 @@ import {
 import vCard from 'vcf';
 import {ContactApiService} from '../../services';
 
-const TYPES = ['mobile', 'home', 'work', 'other'];
+const VCARD_TYPES = ['mobile', 'home', 'work', 'other'];
 
 const initialValues = {
   namePrefix: '',
@@ -280,7 +280,7 @@ function ContactUpdateScreen({route, navigation}: any) {
                             />
                           </Pressable>
                         }>
-                        {TYPES.map(type => (
+                        {VCARD_TYPES.map(type => (
                           <Menu.Item
                             onPress={() => {
                               setFieldValue(`tels.${index}.label`, type);
@@ -334,7 +334,7 @@ function ContactUpdateScreen({route, navigation}: any) {
                             />
                           </Pressable>
                         }>
-                        {TYPES.map(type => (
+                        {VCARD_TYPES.map(type => (
                           <Menu.Item
                             onPress={() => {
                               setFieldValue(`emails.${index}.label`, type);
@@ -394,7 +394,7 @@ function ContactUpdateScreen({route, navigation}: any) {
                                 />
                               </Pressable>
                             }>
-                            {TYPES.map(type => (
+                            {VCARD_TYPES.map(type => (
                               <Menu.Item
                                 onPress={() => {
                                   setFieldValue(`adrs.${index}.label`, type);
@@ -465,7 +465,7 @@ function ContactUpdateScreen({route, navigation}: any) {
                                 />
                               </Pressable>
                             }>
-                            {TYPES.map(type => (
+                            {VCARD_TYPES.map(type => (
                               <Menu.Item
                                 onPress={() => {
                                   setFieldValue(

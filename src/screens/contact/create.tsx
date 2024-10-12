@@ -7,17 +7,19 @@ import {
   Appbar,
   Button,
   IconButton,
-  List,
   Menu,
-  Text,
   TextInput,
   useTheme,
 } from 'react-native-paper';
 import vCard from 'vcf';
 import {ContactApiService} from '../../services';
 import {ContactCard} from '../../components';
-
-const TYPES = ['mobile', 'home', 'work', 'other'];
+import {
+  VCARD_SOCIAL_PROFILES_TYPES,
+  VCARD_TYPES_LABLES,
+  VCARD_SOCIAL_PROFILES_TYPES_LABELS,
+  VCARD_TYPES,
+} from '../../constants';
 
 const initialValues = {
   namePrefix: '',
@@ -33,23 +35,23 @@ const initialValues = {
   tels: [
     {
       value: '',
-      label: 'Home',
+      label: VCARD_TYPES_LABLES[VCARD_TYPES.HOME],
     },
     {
       value: '',
-      label: 'Home',
+      label: VCARD_TYPES_LABLES[VCARD_TYPES.HOME],
     },
   ],
   emails: [
     {
       value: '',
-      label: 'Home',
+      label: VCARD_TYPES_LABLES[VCARD_TYPES.HOME],
     },
   ],
   adrs: [
     {
       value: '',
-      label: 'Home',
+      label: VCARD_TYPES_LABLES[VCARD_TYPES.HOME],
     },
   ],
   urls: [
@@ -60,7 +62,10 @@ const initialValues = {
   socialProfiles: [
     {
       value: '',
-      label: 'Home',
+      label:
+        VCARD_SOCIAL_PROFILES_TYPES_LABELS[
+          VCARD_SOCIAL_PROFILES_TYPES.FACEBOOK
+        ],
     },
   ],
 };
@@ -160,7 +165,7 @@ function ContactCreateScreen({route, navigation}: any) {
         onSubmit={handleSubmit}>
         {({handleChange, handleBlur, setFieldValue, values}) => (
           <View style={{gap: 16}}>
-            <Pressable>
+            <Pressable style={{paddingHorizontal: 16}}>
               <ContactCard />
             </Pressable>
 
@@ -336,7 +341,7 @@ function ContactCreateScreen({route, navigation}: any) {
                               />
                             </Pressable>
                           }>
-                          {TYPES.map(type => (
+                          {Object.values(VCARD_TYPES_LABLES).map(type => (
                             <Menu.Item
                               onPress={() => {
                                 setFieldValue(`tels.${index}.label`, type);
@@ -404,7 +409,7 @@ function ContactCreateScreen({route, navigation}: any) {
                               />
                             </Pressable>
                           }>
-                          {TYPES.map(type => (
+                          {Object.values(VCARD_TYPES_LABLES).map(type => (
                             <Menu.Item
                               onPress={() => {
                                 setFieldValue(`emails.${index}.label`, type);
@@ -472,7 +477,7 @@ function ContactCreateScreen({route, navigation}: any) {
                               />
                             </Pressable>
                           }>
-                          {TYPES.map(type => (
+                          {Object.values(VCARD_TYPES_LABLES).map(type => (
                             <Menu.Item
                               onPress={() => {
                                 setFieldValue(`adrs.${index}.label`, type);
@@ -546,7 +551,9 @@ function ContactCreateScreen({route, navigation}: any) {
                               />
                             </Pressable>
                           }>
-                          {TYPES.map(type => (
+                          {Object.values(
+                            VCARD_SOCIAL_PROFILES_TYPES_LABELS,
+                          ).map(type => (
                             <Menu.Item
                               onPress={() => {
                                 setFieldValue(
