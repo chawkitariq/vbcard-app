@@ -9,6 +9,7 @@ import {
   IconButton,
   List,
   Menu,
+  Text,
   TextInput,
   useTheme,
 } from 'react-native-paper';
@@ -30,6 +31,10 @@ const initialValues = {
   companyTitle: '',
   note: '',
   tels: [
+    {
+      value: '',
+      label: 'Home',
+    },
     {
       value: '',
       label: 'Home',
@@ -154,7 +159,7 @@ function ContactCreateScreen({route, navigation}: any) {
         validateOnChange={true}
         onSubmit={handleSubmit}>
         {({handleChange, handleBlur, setFieldValue, values}) => (
-          <>
+          <View style={{gap: 16}}>
             <Pressable>
               <ContactCard />
             </Pressable>
@@ -284,265 +289,326 @@ function ContactCreateScreen({route, navigation}: any) {
 
             <FieldArray name="tels">
               {({remove, push}) => (
-                <List.Section title="Téléphone" style={{gap: 16}}>
+                <>
                   {values.tels.map((tel, index) => (
                     <View key={index} style={{gap: 16}}>
-                      <TextInput
-                        onChangeText={handleChange(`tels.${index}.value`)}
-                        onBlur={handleBlur(`tels.${index}.value`)}
-                        value={tel.value}
-                        label="Téléphone"
-                      />
-                      <Menu
-                        visible={!!isLabelMenuVisible?.[`tels.${index}`]}
-                        onDismiss={() =>
-                          setIsLabelMenuVisible({
-                            [`tels.${index}`]: false,
-                          })
-                        }
-                        anchor={
-                          <Pressable
-                            onPress={() => {
-                              setIsLabelMenuVisible({
-                                [`tels.${index}`]: true,
-                              });
-                            }}>
-                            <TextInput
-                              style={{width: '50%'}}
-                              label="Label"
-                              editable={false}
-                              value={
-                                tel.label.charAt(0).toUpperCase() +
-                                tel.label.slice(1)
+                      <View style={{flexDirection: 'row'}}>
+                        <IconButton
+                          icon="phone"
+                          style={[index !== 0 && {opacity: 0}]}
+                        />
+                        <TextInput
+                          style={{flex: 1}}
+                          onChangeText={handleChange(`tels.${index}.value`)}
+                          onBlur={handleBlur(`tels.${index}.value`)}
+                          value={tel.value}
+                          label="Téléphone"
+                        />
+                        <IconButton
+                          icon="close"
+                          style={[values.tels.length <= 1 && {opacity: 0}]}
+                        />
+                      </View>
+                      <View style={{flexDirection: 'row'}}>
+                        <IconButton icon="phone" style={{opacity: 0}} />
+                        <Menu
+                          visible={!!isLabelMenuVisible?.[`tels.${index}`]}
+                          onDismiss={() =>
+                            setIsLabelMenuVisible({
+                              [`tels.${index}`]: false,
+                            })
+                          }
+                          anchor={
+                            <Pressable
+                              onPress={() => {
+                                setIsLabelMenuVisible({
+                                  [`tels.${index}`]: true,
+                                });
+                              }}>
+                              <TextInput
+                                label="Label"
+                                editable={false}
+                                value={
+                                  tel.label.charAt(0).toUpperCase() +
+                                  tel.label.slice(1)
+                                }
+                                right={<TextInput.Icon icon="chevron-down" />}
+                              />
+                            </Pressable>
+                          }>
+                          {TYPES.map(type => (
+                            <Menu.Item
+                              onPress={() => {
+                                setFieldValue(`tels.${index}.label`, type);
+                                setIsLabelMenuVisible(undefined);
+                              }}
+                              title={
+                                type.charAt(0).toUpperCase() + type.slice(1)
                               }
-                              right={<TextInput.Icon icon="chevron-down" />}
                             />
-                          </Pressable>
-                        }>
-                        {TYPES.map(type => (
-                          <Menu.Item
-                            onPress={() => {
-                              setFieldValue(`tels.${index}.label`, type);
-                              setIsLabelMenuVisible(undefined);
-                            }}
-                            title={type.charAt(0).toUpperCase() + type.slice(1)}
-                          />
-                        ))}
-                      </Menu>
+                          ))}
+                        </Menu>
+                      </View>
                     </View>
                   ))}
-                </List.Section>
+                </>
               )}
             </FieldArray>
 
             <FieldArray name="emails">
               {({remove, push}) => (
-                <List.Section title="Adresse mail" style={{gap: 16}}>
+                <>
                   {values.emails.map((email, index) => (
                     <View key={index} style={{gap: 16}}>
-                      <TextInput
-                        onChangeText={handleChange(`emails.${index}.value`)}
-                        onBlur={handleBlur(`emails.${index}.value`)}
-                        value={email.value}
-                        label="Adresse mail"
-                      />
-                      <Menu
-                        visible={!!isLabelMenuVisible?.[`emails.${index}`]}
-                        onDismiss={() =>
-                          setIsLabelMenuVisible({
-                            [`emails.${index}`]: false,
-                          })
-                        }
-                        anchor={
-                          <Pressable
-                            onPress={() => {
-                              setIsLabelMenuVisible({
-                                [`emails.${index}`]: true,
-                              });
-                            }}>
-                            <TextInput
-                              style={{width: '50%'}}
-                              label="Label"
-                              editable={false}
-                              value={
-                                email.label.charAt(0).toUpperCase() +
-                                email.label.slice(1)
+                      <View style={{flexDirection: 'row'}}>
+                        <IconButton
+                          icon="email"
+                          style={[index !== 0 && {opacity: 0}]}
+                        />
+                        <TextInput
+                          style={{flex: 1}}
+                          onChangeText={handleChange(`emails.${index}.value`)}
+                          onBlur={handleBlur(`emails.${index}.value`)}
+                          value={email.value}
+                          label="Adresse email"
+                        />
+                        <IconButton
+                          icon="close"
+                          style={[values.emails.length <= 1 && {opacity: 0}]}
+                        />
+                      </View>
+                      <View style={{flexDirection: 'row'}}>
+                        <IconButton icon="phone" style={{opacity: 0}} />
+                        <Menu
+                          visible={!!isLabelMenuVisible?.[`emails.${index}`]}
+                          onDismiss={() =>
+                            setIsLabelMenuVisible({
+                              [`emails.${index}`]: false,
+                            })
+                          }
+                          anchor={
+                            <Pressable
+                              onPress={() => {
+                                setIsLabelMenuVisible({
+                                  [`emails.${index}`]: true,
+                                });
+                              }}>
+                              <TextInput
+                                label="Label"
+                                editable={false}
+                                value={
+                                  email.label.charAt(0).toUpperCase() +
+                                  email.label.slice(1)
+                                }
+                                right={<TextInput.Icon icon="chevron-down" />}
+                              />
+                            </Pressable>
+                          }>
+                          {TYPES.map(type => (
+                            <Menu.Item
+                              onPress={() => {
+                                setFieldValue(`emails.${index}.label`, type);
+                                setIsLabelMenuVisible(undefined);
+                              }}
+                              title={
+                                type.charAt(0).toUpperCase() + type.slice(1)
                               }
-                              right={<TextInput.Icon icon="chevron-down" />}
                             />
-                          </Pressable>
-                        }>
-                        {TYPES.map(type => (
-                          <Menu.Item
-                            onPress={() => {
-                              setFieldValue(`emails.${index}.label`, type);
-                              setIsLabelMenuVisible(undefined);
-                            }}
-                            title={type.charAt(0).toUpperCase() + type.slice(1)}
-                          />
-                        ))}
-                      </Menu>
+                          ))}
+                        </Menu>
+                      </View>
                     </View>
                   ))}
-                </List.Section>
+                </>
               )}
             </FieldArray>
 
-            {!isShowMore && (
-              <Button onPress={() => setIsShowMore(true)}>Afficher tout</Button>
-            )}
-
-            {isShowMore && (
-              <>
-                <FieldArray name="adrs">
-                  {({remove, push}) => (
-                    <List.Section title="Adresses" style={{gap: 16}}>
-                      {values.adrs.map((adr, index) => (
-                        <View key={index} style={{gap: 16}}>
-                          <TextInput
-                            multiline
-                            onChangeText={handleChange(`adrs.${index}.value`)}
-                            onBlur={handleBlur(`adrs.${index}.value`)}
-                            value={adr.value}
-                            label="Adresse"
-                          />
-                          <Menu
-                            visible={!!isLabelMenuVisible?.[`adrs.${index}`]}
-                            onDismiss={() =>
-                              setIsLabelMenuVisible({
-                                [`adrs.${index}`]: false,
-                              })
-                            }
-                            anchor={
-                              <Pressable
-                                onPress={() => {
-                                  setIsLabelMenuVisible({
-                                    [`adrs.${index}`]: true,
-                                  });
-                                }}>
-                                <TextInput
-                                  style={{width: '50%'}}
-                                  label="Label"
-                                  editable={false}
-                                  value={
-                                    adr.label.charAt(0).toUpperCase() +
-                                    adr.label.slice(1)
-                                  }
-                                  right={<TextInput.Icon icon="chevron-down" />}
-                                />
-                              </Pressable>
-                            }>
-                            {TYPES.map(type => (
-                              <Menu.Item
-                                onPress={() => {
-                                  setFieldValue(`adrs.${index}.label`, type);
-                                  setIsLabelMenuVisible(undefined);
-                                }}
-                                title={
-                                  type.charAt(0).toUpperCase() + type.slice(1)
+            <FieldArray name="adrs">
+              {({remove, push}) => (
+                <>
+                  {values.adrs.map((adr, index) => (
+                    <View key={index} style={{gap: 16}}>
+                      <View style={{flexDirection: 'row'}}>
+                        <IconButton
+                          icon="map-marker"
+                          style={[index !== 0 && {opacity: 0}]}
+                        />
+                        <TextInput
+                          style={{flex: 1}}
+                          onChangeText={handleChange(`adrs.${index}.value`)}
+                          onBlur={handleBlur(`adrs.${index}.value`)}
+                          value={adr.value}
+                          label="Adresse adr"
+                        />
+                        <IconButton
+                          icon="close"
+                          style={[values.adrs.length <= 1 && {opacity: 0}]}
+                        />
+                      </View>
+                      <View style={{flexDirection: 'row'}}>
+                        <IconButton icon="phone" style={{opacity: 0}} />
+                        <Menu
+                          visible={!!isLabelMenuVisible?.[`adrs.${index}`]}
+                          onDismiss={() =>
+                            setIsLabelMenuVisible({
+                              [`adrs.${index}`]: false,
+                            })
+                          }
+                          anchor={
+                            <Pressable
+                              onPress={() => {
+                                setIsLabelMenuVisible({
+                                  [`adrs.${index}`]: true,
+                                });
+                              }}>
+                              <TextInput
+                                label="Label"
+                                editable={false}
+                                value={
+                                  adr.label.charAt(0).toUpperCase() +
+                                  adr.label.slice(1)
                                 }
+                                right={<TextInput.Icon icon="chevron-down" />}
                               />
-                            ))}
-                          </Menu>
-                        </View>
-                      ))}
-                    </List.Section>
-                  )}
-                </FieldArray>
+                            </Pressable>
+                          }>
+                          {TYPES.map(type => (
+                            <Menu.Item
+                              onPress={() => {
+                                setFieldValue(`adrs.${index}.label`, type);
+                                setIsLabelMenuVisible(undefined);
+                              }}
+                              title={
+                                type.charAt(0).toUpperCase() + type.slice(1)
+                              }
+                            />
+                          ))}
+                        </Menu>
+                      </View>
+                    </View>
+                  ))}
+                </>
+              )}
+            </FieldArray>
 
-                <FieldArray name="socialProfiles">
-                  {({remove, push}) => (
-                    <List.Section title="Réseaux sociaux" style={{gap: 16}}>
-                      {values.socialProfiles.map((socialProfile, index) => (
-                        <View key={index} style={{gap: 16}}>
-                          <TextInput
-                            onChangeText={handleChange(
-                              `socialProfiles.${index}.value`,
-                            )}
-                            onBlur={handleBlur(`socialProfiles.${index}.value`)}
-                            value={socialProfile.value}
-                            label="Résaux social"
-                          />
-                          <Menu
-                            visible={
-                              !!isLabelMenuVisible?.[`socialProfiles.${index}`]
-                            }
-                            onDismiss={() =>
-                              setIsLabelMenuVisible({
-                                [`socialProfiles.${index}`]: false,
-                              })
-                            }
-                            anchor={
-                              <Pressable
-                                onPress={() => {
-                                  setIsLabelMenuVisible({
-                                    [`socialProfiles.${index}`]: true,
-                                  });
-                                }}>
-                                <TextInput
-                                  style={{width: '50%'}}
-                                  label="Label"
-                                  editable={false}
-                                  value={
-                                    socialProfile.label
-                                      .charAt(0)
-                                      .toUpperCase() +
-                                    socialProfile.label.slice(1)
-                                  }
-                                  right={<TextInput.Icon icon="chevron-down" />}
-                                />
-                              </Pressable>
-                            }>
-                            {TYPES.map(type => (
-                              <Menu.Item
-                                onPress={() => {
-                                  setFieldValue(
-                                    `socialProfiles.${index}.label`,
-                                    type,
-                                  );
-                                  setIsLabelMenuVisible(undefined);
-                                }}
-                                title={
-                                  type.charAt(0).toUpperCase() + type.slice(1)
+            <FieldArray name="socialProfiles">
+              {({remove, push}) => (
+                <>
+                  {values.socialProfiles.map((socialProfile, index) => (
+                    <View key={index} style={{gap: 16}}>
+                      <View style={{flexDirection: 'row'}}>
+                        <IconButton
+                          icon="account-network"
+                          style={[index !== 0 && {opacity: 0}]}
+                        />
+                        <TextInput
+                          style={{flex: 1}}
+                          onChangeText={handleChange(
+                            `socialProfiles.${index}.value`,
+                          )}
+                          onBlur={handleBlur(`socialProfiles.${index}.value`)}
+                          value={socialProfile.value}
+                          label="Réseau social"
+                        />
+                        <IconButton
+                          icon="close"
+                          style={[
+                            values.socialProfiles.length <= 1 && {opacity: 0},
+                          ]}
+                        />
+                      </View>
+                      <View style={{flexDirection: 'row'}}>
+                        <IconButton icon="phone" style={{opacity: 0}} />
+                        <Menu
+                          visible={
+                            !!isLabelMenuVisible?.[`socialProfiles.${index}`]
+                          }
+                          onDismiss={() =>
+                            setIsLabelMenuVisible({
+                              [`socialProfiles.${index}`]: false,
+                            })
+                          }
+                          anchor={
+                            <Pressable
+                              onPress={() => {
+                                setIsLabelMenuVisible({
+                                  [`socialProfiles.${index}`]: true,
+                                });
+                              }}>
+                              <TextInput
+                                label="Label"
+                                editable={false}
+                                value={
+                                  socialProfile.label.charAt(0).toUpperCase() +
+                                  socialProfile.label.slice(1)
                                 }
+                                right={<TextInput.Icon icon="chevron-down" />}
                               />
-                            ))}
-                          </Menu>
-                        </View>
-                      ))}
-                    </List.Section>
-                  )}
-                </FieldArray>
+                            </Pressable>
+                          }>
+                          {TYPES.map(type => (
+                            <Menu.Item
+                              onPress={() => {
+                                setFieldValue(
+                                  `socialProfiles.${index}.label`,
+                                  type,
+                                );
+                                setIsLabelMenuVisible(undefined);
+                              }}
+                              title={
+                                type.charAt(0).toUpperCase() + type.slice(1)
+                              }
+                            />
+                          ))}
+                        </Menu>
+                      </View>
+                    </View>
+                  ))}
+                </>
+              )}
+            </FieldArray>
 
-                <FieldArray name="urls">
-                  {({remove, push}) => (
-                    <List.Section title="Liens externe" style={{gap: 16}}>
-                      {values.urls.map((url, index) => (
-                        <View key={index} style={{gap: 16}}>
-                          <TextInput
-                            onChangeText={handleChange(`urls.${index}.value`)}
-                            onBlur={handleBlur(`urls.${index}.value`)}
-                            value={url.value}
-                            label="lien"
-                          />
-                        </View>
-                      ))}
-                    </List.Section>
-                  )}
-                </FieldArray>
+            <FieldArray name="urls">
+              {({remove, push}) => (
+                <>
+                  {values.urls.map((url, index) => (
+                    <>
+                      <View style={{flexDirection: 'row'}}>
+                        <IconButton
+                          icon="web"
+                          style={[index !== 0 && {opacity: 0}]}
+                        />
+                        <TextInput
+                          style={{flex: 1}}
+                          onChangeText={handleChange(`urls.${index}.value`)}
+                          onBlur={handleBlur(`urls.${index}.value`)}
+                          value={url.value}
+                          label="Site web"
+                        />
+                        <IconButton
+                          icon="close"
+                          style={[values.urls.length <= 1 && {opacity: 0}]}
+                        />
+                      </View>
+                    </>
+                  ))}
+                </>
+              )}
+            </FieldArray>
 
-                <List.Section title="Note">
-                  <TextInput
-                    multiline
-                    onChangeText={handleChange('note')}
-                    onBlur={handleBlur('note')}
-                    value={values.note}
-                    label="note"
-                  />
-                </List.Section>
-              </>
-            )}
-          </>
+            <View style={{flexDirection: 'row'}}>
+              <IconButton icon="note" />
+              <TextInput
+                style={{flex: 1}}
+                multiline
+                onChangeText={handleChange('note')}
+                onBlur={handleBlur('note')}
+                value={values.note}
+                label="note"
+              />
+              <IconButton icon="note" style={{opacity: 0}} />
+            </View>
+          </View>
         )}
       </Formik>
     </ScrollView>
