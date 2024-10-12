@@ -239,7 +239,6 @@ function ContactCreateScreen({route, navigation}: any) {
                   {values.tels.map((tel, index) => (
                     <View key={index} style={{gap: 16}}>
                       <TextInput
-                        style={{flex: 1, flexGrow: 1}}
                         onChangeText={handleChange(`tels.${index}.value`)}
                         onBlur={handleBlur(`tels.${index}.value`)}
                         value={tel.value}
@@ -293,7 +292,6 @@ function ContactCreateScreen({route, navigation}: any) {
                   {values.emails.map((email, index) => (
                     <View key={index} style={{gap: 16}}>
                       <TextInput
-                        style={{flex: 1, flexGrow: 1}}
                         onChangeText={handleChange(`emails.${index}.value`)}
                         onBlur={handleBlur(`emails.${index}.value`)}
                         value={email.value}
@@ -353,11 +351,11 @@ function ContactCreateScreen({route, navigation}: any) {
                       {values.adrs.map((adr, index) => (
                         <View key={index} style={{gap: 16}}>
                           <TextInput
-                            style={{flex: 1, flexGrow: 1}}
+                            multiline
                             onChangeText={handleChange(`adrs.${index}.value`)}
                             onBlur={handleBlur(`adrs.${index}.value`)}
                             value={adr.value}
-                            label="Boîte postale, Adresse étendue, Nom de rue, Ville, Région (ou état/province), Code postal, Pays"
+                            label="Adresse"
                           />
                           <Menu
                             visible={!!isLabelMenuVisible?.[`adrs.${index}`]}
@@ -405,27 +403,17 @@ function ContactCreateScreen({route, navigation}: any) {
 
                 <FieldArray name="socialProfiles">
                   {({remove, push}) => (
-                    <List.Section title="Réseau sociaux" style={{gap: 16}}>
+                    <List.Section title="Réseaux sociaux" style={{gap: 16}}>
                       {values.socialProfiles.map((socialProfile, index) => (
                         <View key={index} style={{gap: 16}}>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              gap: 16,
-                            }}>
-                            <TextInput
-                              style={{flex: 1, flexGrow: 1}}
-                              onChangeText={handleChange(
-                                `socialProfiles.${index}.value`,
-                              )}
-                              onBlur={handleBlur(
-                                `socialProfiles.${index}.value`,
-                              )}
-                              value={socialProfile.value}
-                              label="Adresse mail"
-                            />
-                          </View>
+                          <TextInput
+                            onChangeText={handleChange(
+                              `socialProfiles.${index}.value`,
+                            )}
+                            onBlur={handleBlur(`socialProfiles.${index}.value`)}
+                            value={socialProfile.value}
+                            label="Résaux social"
+                          />
                           <Menu
                             visible={
                               !!isLabelMenuVisible?.[`socialProfiles.${index}`]
@@ -483,7 +471,6 @@ function ContactCreateScreen({route, navigation}: any) {
                       {values.urls.map((url, index) => (
                         <View key={index} style={{gap: 16}}>
                           <TextInput
-                            style={{flex: 1, flexGrow: 1}}
                             onChangeText={handleChange(`urls.${index}.value`)}
                             onBlur={handleBlur(`urls.${index}.value`)}
                             value={url.value}
