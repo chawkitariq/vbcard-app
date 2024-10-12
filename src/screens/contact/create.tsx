@@ -6,6 +6,7 @@ import {Pressable, ScrollView, View} from 'react-native';
 import {
   Appbar,
   Button,
+  IconButton,
   List,
   Menu,
   TextInput,
@@ -61,6 +62,7 @@ const initialValues = {
 function ContactCreateScreen({route, navigation}: any) {
   const theme = useTheme();
 
+  const [isShowPersonalMore, setIsShowPersonalMore] = useState(false);
   const [isShowMore, setIsShowMore] = useState(false);
 
   const [isLabelMenuVisible, setIsLabelMenuVisible] = useState<{
@@ -151,7 +153,7 @@ function ContactCreateScreen({route, navigation}: any) {
         validateOnChange={true}
         onSubmit={handleSubmit}>
         {({handleChange, handleBlur, setFieldValue, values}) => (
-          <View style={{padding: 16 * 1.5}}>
+          <>
             <List.Section>
               <Pressable
                 style={{
@@ -162,48 +164,88 @@ function ContactCreateScreen({route, navigation}: any) {
             </List.Section>
 
             <List.Section title="Personnel" style={{gap: 16}}>
-              {isShowMore && (
-                <TextInput
-                  onChangeText={handleChange('namePrefix')}
-                  onBlur={handleBlur('namePrefix')}
-                  value={values.namePrefix}
-                  label="Prefix"
-                />
+              {isShowPersonalMore && (
+                <View style={{flexDirection: 'row'}}>
+                  <IconButton icon="account" />
+                  <TextInput
+                    style={{flex: 1}}
+                    onChangeText={handleChange('namePrefix')}
+                    onBlur={handleBlur('namePrefix')}
+                    value={values.namePrefix}
+                    label="Prefix"
+                  />
+                  <IconButton
+                    icon="chevron-up"
+                    onPress={() => setIsShowPersonalMore(false)}
+                  />
+                </View>
               )}
-              <TextInput
-                onChangeText={handleChange('firstName')}
-                onBlur={handleBlur('firstName')}
-                value={values.firstName}
-                label="Prénom"
-              />
-              {isShowMore && (
-                <TextInput
-                  onChangeText={handleChange('middleName')}
-                  onBlur={handleBlur('middleName')}
-                  value={values.middleName}
-                  label="Deuxième prénom"
+              <View style={{flexDirection: 'row'}}>
+                <IconButton
+                  icon="account"
+                  style={[isShowPersonalMore && {opacity: 0}]}
                 />
+                <TextInput
+                  style={{flex: 1}}
+                  onChangeText={handleChange('firstName')}
+                  onBlur={handleBlur('firstName')}
+                  value={values.firstName}
+                  label="Prénom"
+                />
+                <IconButton
+                  icon="chevron-down"
+                  style={[isShowPersonalMore && {opacity: 0}]}
+                  onPress={() => setIsShowPersonalMore(true)}
+                />
+              </View>
+              {isShowPersonalMore && (
+                <View style={{flexDirection: 'row'}}>
+                  <IconButton icon="account" style={{opacity: 0}} />
+                  <TextInput
+                    style={{flex: 1}}
+                    onChangeText={handleChange('middleName')}
+                    onBlur={handleBlur('middleName')}
+                    value={values.middleName}
+                    label="Deuxième prénom"
+                  />
+                  <IconButton icon="chevron-down" style={{opacity: 0}} />
+                </View>
               )}
-              <TextInput
-                onChangeText={handleChange('lastName')}
-                onBlur={handleBlur('lastName')}
-                value={values.lastName}
-                label="Nom"
-              />
-              {isShowMore && (
+              <View style={{flexDirection: 'row'}}>
+                <IconButton icon="account" style={{opacity: 0}} />
+                <TextInput
+                  style={{flex: 1}}
+                  onChangeText={handleChange('lastName')}
+                  onBlur={handleBlur('lastName')}
+                  value={values.lastName}
+                  label="Nom"
+                />
+                <IconButton icon="chevron-down" style={{opacity: 0}} />
+              </View>
+              {isShowPersonalMore && (
                 <>
-                  <TextInput
-                    onChangeText={handleChange('nameSuffix')}
-                    onBlur={handleBlur('nameSuffix')}
-                    value={values.nameSuffix}
-                    label="Suffixe"
-                  />
-                  <TextInput
-                    onChangeText={handleChange('nickName')}
-                    onBlur={handleBlur('nickName')}
-                    value={values.nickName}
-                    label="Surnom"
-                  />
+                  <View style={{flexDirection: 'row'}}>
+                    <IconButton icon="account" style={{opacity: 0}} />
+                    <TextInput
+                      style={{flex: 1}}
+                      onChangeText={handleChange('nameSuffix')}
+                      onBlur={handleBlur('nameSuffix')}
+                      value={values.nameSuffix}
+                      label="Suffixe"
+                    />
+                    <IconButton icon="chevron-down" style={{opacity: 0}} />
+                  </View>
+                  <View style={{flexDirection: 'row'}}>
+                    <IconButton icon="account" style={{opacity: 0}} />
+                    <TextInput
+                      style={{flex: 1}}
+                      onChangeText={handleChange('nickName')}
+                      onBlur={handleBlur('nickName')}
+                      value={values.nickName}
+                      label="Surnom"
+                    />
+                    <IconButton icon="chevron-down" style={{opacity: 0}} />
+                  </View>
                 </>
               )}
             </List.Section>
@@ -493,7 +535,7 @@ function ContactCreateScreen({route, navigation}: any) {
                 </List.Section>
               </>
             )}
-          </View>
+          </>
         )}
       </Formik>
     </ScrollView>
