@@ -163,7 +163,7 @@ function ContactCreateScreen({route, navigation}: any) {
         validateOnChange={true}
         onSubmit={handleSubmit}>
         {({handleChange, handleBlur, setFieldValue, values}) => (
-          <View style={{gap: 16}}>
+          <View style={{paddingVertical: 16, gap: 16}}>
             <Pressable style={{paddingHorizontal: 16}}>
               <ContactCard />
             </Pressable>
