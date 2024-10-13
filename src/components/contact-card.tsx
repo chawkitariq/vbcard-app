@@ -17,7 +17,7 @@ export const ContactCard = ({layout, size: ratio = 'regular'}: Props) => {
       style={{
         aspectRatio: aspectRatios[ratio],
         borderRadius: theme.roundness,
-        backgroundColor: theme.colors.secondaryContainer,
+        backgroundColor: theme.colors.surfaceVariant,
       }}></View>
   );
 };

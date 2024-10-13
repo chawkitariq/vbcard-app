@@ -37,6 +37,10 @@ const initialValues = {
       value: '',
       label: VCARD_TYPES_LABLES[VCARD_TYPES.HOME],
     },
+    {
+      value: '',
+      label: VCARD_TYPES_LABLES[VCARD_TYPES.HOME],
+    },
   ],
   emails: [
     {
@@ -164,130 +168,134 @@ function ContactCreateScreen({route, navigation}: any) {
               <ContactCard />
             </Pressable>
 
-            {isShowPersonalMore && (
+            <View>
+              {isShowPersonalMore && (
+                <View style={{flexDirection: 'row'}}>
+                  <IconButton icon="account" />
+                  <TextInput
+                    style={{flex: 1}}
+                    onChangeText={handleChange('namePrefix')}
+                    onBlur={handleBlur('namePrefix')}
+                    value={values.namePrefix}
+                    label="Prefix"
+                  />
+                  <IconButton
+                    icon="chevron-up"
+                    onPress={() => setIsShowPersonalMore(false)}
+                  />
+                </View>
+              )}
               <View style={{flexDirection: 'row'}}>
-                <IconButton icon="account" />
+                <IconButton
+                  icon="account"
+                  style={[isShowPersonalMore && {opacity: 0}]}
+                />
                 <TextInput
                   style={{flex: 1}}
-                  onChangeText={handleChange('namePrefix')}
-                  onBlur={handleBlur('namePrefix')}
-                  value={values.namePrefix}
-                  label="Prefix"
+                  onChangeText={handleChange('firstName')}
+                  onBlur={handleBlur('firstName')}
+                  value={values.firstName}
+                  label="Prénom"
                 />
                 <IconButton
-                  icon="chevron-up"
-                  onPress={() => setIsShowPersonalMore(false)}
+                  icon="chevron-down"
+                  style={[isShowPersonalMore && {opacity: 0}]}
+                  onPress={() => setIsShowPersonalMore(true)}
                 />
               </View>
-            )}
-            <View style={{flexDirection: 'row'}}>
-              <IconButton
-                icon="account"
-                style={[isShowPersonalMore && {opacity: 0}]}
-              />
-              <TextInput
-                style={{flex: 1}}
-                onChangeText={handleChange('firstName')}
-                onBlur={handleBlur('firstName')}
-                value={values.firstName}
-                label="Prénom"
-              />
-              <IconButton
-                icon="chevron-down"
-                style={[isShowPersonalMore && {opacity: 0}]}
-                onPress={() => setIsShowPersonalMore(true)}
-              />
-            </View>
-            {isShowPersonalMore && (
+              {isShowPersonalMore && (
+                <View style={{flexDirection: 'row'}}>
+                  <IconButton icon="account" style={{opacity: 0}} />
+                  <TextInput
+                    style={{flex: 1}}
+                    onChangeText={handleChange('middleName')}
+                    onBlur={handleBlur('middleName')}
+                    value={values.middleName}
+                    label="Deuxième prénom"
+                  />
+                  <IconButton icon="chevron-down" style={{opacity: 0}} />
+                </View>
+              )}
               <View style={{flexDirection: 'row'}}>
                 <IconButton icon="account" style={{opacity: 0}} />
                 <TextInput
                   style={{flex: 1}}
-                  onChangeText={handleChange('middleName')}
-                  onBlur={handleBlur('middleName')}
-                  value={values.middleName}
-                  label="Deuxième prénom"
+                  onChangeText={handleChange('lastName')}
+                  onBlur={handleBlur('lastName')}
+                  value={values.lastName}
+                  label="Nom"
                 />
                 <IconButton icon="chevron-down" style={{opacity: 0}} />
               </View>
-            )}
-            <View style={{flexDirection: 'row'}}>
-              <IconButton icon="account" style={{opacity: 0}} />
-              <TextInput
-                style={{flex: 1}}
-                onChangeText={handleChange('lastName')}
-                onBlur={handleBlur('lastName')}
-                value={values.lastName}
-                label="Nom"
-              />
-              <IconButton icon="chevron-down" style={{opacity: 0}} />
+              {isShowPersonalMore && (
+                <>
+                  <View style={{flexDirection: 'row'}}>
+                    <IconButton icon="account" style={{opacity: 0}} />
+                    <TextInput
+                      style={{flex: 1}}
+                      onChangeText={handleChange('nameSuffix')}
+                      onBlur={handleBlur('nameSuffix')}
+                      value={values.nameSuffix}
+                      label="Suffixe"
+                    />
+                    <IconButton icon="chevron-down" style={{opacity: 0}} />
+                  </View>
+                  <View style={{flexDirection: 'row'}}>
+                    <IconButton icon="account" style={{opacity: 0}} />
+                    <TextInput
+                      style={{flex: 1}}
+                      onChangeText={handleChange('nickName')}
+                      onBlur={handleBlur('nickName')}
+                      value={values.nickName}
+                      label="Surnom"
+                    />
+                    <IconButton icon="chevron-down" style={{opacity: 0}} />
+                  </View>
+                </>
+              )}
             </View>
-            {isShowPersonalMore && (
-              <>
-                <View style={{flexDirection: 'row'}}>
-                  <IconButton icon="account" style={{opacity: 0}} />
-                  <TextInput
-                    style={{flex: 1}}
-                    onChangeText={handleChange('nameSuffix')}
-                    onBlur={handleBlur('nameSuffix')}
-                    value={values.nameSuffix}
-                    label="Suffixe"
-                  />
-                  <IconButton icon="chevron-down" style={{opacity: 0}} />
-                </View>
-                <View style={{flexDirection: 'row'}}>
-                  <IconButton icon="account" style={{opacity: 0}} />
-                  <TextInput
-                    style={{flex: 1}}
-                    onChangeText={handleChange('nickName')}
-                    onBlur={handleBlur('nickName')}
-                    value={values.nickName}
-                    label="Surnom"
-                  />
-                  <IconButton icon="chevron-down" style={{opacity: 0}} />
-                </View>
-              </>
-            )}
 
-            <View style={{flexDirection: 'row'}}>
-              <IconButton icon="domain" />
-              <TextInput
-                style={{flex: 1}}
-                onChangeText={handleChange('company')}
-                onBlur={handleBlur('company')}
-                value={values.company}
-                label="Entreprise"
-              />
-              <IconButton icon="account" style={{opacity: 0}} />
-            </View>
-            <View style={{flexDirection: 'row'}}>
-              <IconButton icon="domain" style={{opacity: 0}} />
-              <TextInput
-                style={{flex: 1}}
-                onChangeText={handleChange('companyDepartement')}
-                onBlur={handleBlur('companyDepartement')}
-                value={values.companyDepartement}
-                label="Département"
-              />
-              <IconButton icon="account" style={{opacity: 0}} />
-            </View>
-            <View style={{flexDirection: 'row'}}>
-              <IconButton icon="domain" style={{opacity: 0}} />
-              <TextInput
-                style={{flex: 1}}
-                onChangeText={handleChange('companyTitle')}
-                onBlur={handleBlur('companyTitle')}
-                value={values.companyTitle}
-                label="Poste"
-              />
-              <IconButton icon="account" style={{opacity: 0}} />
+            <View>
+              <View style={{flexDirection: 'row'}}>
+                <IconButton icon="domain" />
+                <TextInput
+                  style={{flex: 1}}
+                  onChangeText={handleChange('company')}
+                  onBlur={handleBlur('company')}
+                  value={values.company}
+                  label="Entreprise"
+                />
+                <IconButton icon="account" style={{opacity: 0}} />
+              </View>
+              <View style={{flexDirection: 'row'}}>
+                <IconButton icon="domain" style={{opacity: 0}} />
+                <TextInput
+                  style={{flex: 1}}
+                  onChangeText={handleChange('companyDepartement')}
+                  onBlur={handleBlur('companyDepartement')}
+                  value={values.companyDepartement}
+                  label="Département"
+                />
+                <IconButton icon="account" style={{opacity: 0}} />
+              </View>
+              <View style={{flexDirection: 'row'}}>
+                <IconButton icon="domain" style={{opacity: 0}} />
+                <TextInput
+                  style={{flex: 1}}
+                  onChangeText={handleChange('companyTitle')}
+                  onBlur={handleBlur('companyTitle')}
+                  value={values.companyTitle}
+                  label="Poste"
+                />
+                <IconButton icon="account" style={{opacity: 0}} />
+              </View>
             </View>
 
             <FieldArray name="tels">
               {({remove, push}) => (
-                <>
+                <View>
                   {values.tels.map((tel, index) => (
-                    <View key={index} style={{gap: 16}}>
+                    <View key={index}>
                       <View style={{flexDirection: 'row'}}>
                         <IconButton
                           icon="phone"
@@ -302,6 +310,7 @@ function ContactCreateScreen({route, navigation}: any) {
                         />
                         <IconButton
                           icon="close"
+                          onPress={() => remove(index)}
                           style={[values.tels.length <= 1 && {opacity: 0}]}
                         />
                       </View>
@@ -347,15 +356,15 @@ function ContactCreateScreen({route, navigation}: any) {
                       </View>
                     </View>
                   ))}
-                </>
+                </View>
               )}
             </FieldArray>
 
             <FieldArray name="emails">
               {({remove, push}) => (
-                <>
+                <View>
                   {values.emails.map((email, index) => (
-                    <View key={index} style={{gap: 16}}>
+                    <View key={index}>
                       <View style={{flexDirection: 'row'}}>
                         <IconButton
                           icon="email"
@@ -370,6 +379,7 @@ function ContactCreateScreen({route, navigation}: any) {
                         />
                         <IconButton
                           icon="close"
+                          onPress={() => remove(index)}
                           style={[values.emails.length <= 1 && {opacity: 0}]}
                         />
                       </View>
@@ -415,15 +425,15 @@ function ContactCreateScreen({route, navigation}: any) {
                       </View>
                     </View>
                   ))}
-                </>
+                </View>
               )}
             </FieldArray>
 
             <FieldArray name="adrs">
               {({remove, push}) => (
-                <>
+                <View>
                   {values.adrs.map((adr, index) => (
-                    <View key={index} style={{gap: 16}}>
+                    <View key={index}>
                       <View style={{flexDirection: 'row'}}>
                         <IconButton
                           icon="map-marker"
@@ -438,6 +448,7 @@ function ContactCreateScreen({route, navigation}: any) {
                         />
                         <IconButton
                           icon="close"
+                          onPress={() => remove(index)}
                           style={[values.adrs.length <= 1 && {opacity: 0}]}
                         />
                       </View>
@@ -483,15 +494,15 @@ function ContactCreateScreen({route, navigation}: any) {
                       </View>
                     </View>
                   ))}
-                </>
+                </View>
               )}
             </FieldArray>
 
             <FieldArray name="socialProfiles">
               {({remove, push}) => (
-                <>
+                <View>
                   {values.socialProfiles.map((socialProfile, index) => (
-                    <View key={index} style={{gap: 16}}>
+                    <View key={index}>
                       <View style={{flexDirection: 'row'}}>
                         <IconButton
                           icon="account-network"
@@ -508,6 +519,7 @@ function ContactCreateScreen({route, navigation}: any) {
                         />
                         <IconButton
                           icon="close"
+                          onPress={() => remove(index)}
                           style={[
                             values.socialProfiles.length <= 1 && {opacity: 0},
                           ]}
@@ -562,13 +574,13 @@ function ContactCreateScreen({route, navigation}: any) {
                       </View>
                     </View>
                   ))}
-                </>
+                </View>
               )}
             </FieldArray>
 
             <FieldArray name="urls">
               {({remove, push}) => (
-                <>
+                <View>
                   {values.urls.map((url, index) => (
                     <>
                       <View style={{flexDirection: 'row'}}>
@@ -585,12 +597,13 @@ function ContactCreateScreen({route, navigation}: any) {
                         />
                         <IconButton
                           icon="close"
+                          onPress={() => remove(index)}
                           style={[values.urls.length <= 1 && {opacity: 0}]}
                         />
                       </View>
                     </>
                   ))}
-                </>
+                </View>
               )}
             </FieldArray>
 
