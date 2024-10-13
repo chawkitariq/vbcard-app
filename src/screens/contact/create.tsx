@@ -37,10 +37,6 @@ const initialValues = {
       value: '',
       label: VCARD_TYPES_LABLES[VCARD_TYPES.HOME],
     },
-    {
-      value: '',
-      label: VCARD_TYPES_LABLES[VCARD_TYPES.HOME],
-    },
   ],
   emails: [
     {
@@ -70,14 +66,20 @@ const initialValues = {
   ],
 };
 
+type ArrayFieldsNames = keyof Pick<
+  typeof initialValues,
+  'tels' | 'emails' | 'adrs' | 'urls' | 'socialProfiles'
+>;
+
 function ContactCreateScreen({route, navigation}: any) {
   const theme = useTheme();
 
   const [isShowPersonalMore, setIsShowPersonalMore] = useState(false);
 
-  const [isLabelMenuVisible, setIsLabelMenuVisible] = useState<{
-    [key: string]: boolean;
-  }>();
+  const [ArrayFieldName, setArrayFieldName] = useState<ArrayFieldsNames>();
+
+  const [arrayFieldLabelMenuIndex, setArrayFieldLabelMenuIndex] =
+    useState<`${ArrayFieldsNames}.${number}`>();
 
   const queryClient = useQueryClient();
 
@@ -131,6 +133,21 @@ function ContactCreateScreen({route, navigation}: any) {
   );
 
   const formRef = useRef<FormikProps<typeof initialValues>>(null);
+
+  useEffect(() => {
+    if (ArrayFieldName) {
+      formRef?.current?.setValues(values => ({
+        ...values,
+        [ArrayFieldName]: [
+          ...values[ArrayFieldName],
+          {
+            value: '',
+            label: VCARD_TYPES_LABLES[VCARD_TYPES.HOME],
+          },
+        ],
+      }));
+    }
+  }, [ArrayFieldName, formRef?.current]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -303,7 +320,12 @@ function ContactCreateScreen({route, navigation}: any) {
                         />
                         <TextInput
                           style={{flex: 1}}
-                          onChangeText={handleChange(`tels.${index}.value`)}
+                          onChangeText={value => {
+                            setFieldValue(`tels.${index}.value`, value);
+                            if (index === values.tels.length - 1) {
+                              setArrayFieldName('tels');
+                            }
+                          }}
                           onBlur={handleBlur(`tels.${index}.value`)}
                           value={tel.value}
                           label="Téléphone"
@@ -317,18 +339,14 @@ function ContactCreateScreen({route, navigation}: any) {
                       <View style={{flexDirection: 'row'}}>
                         <IconButton icon="phone" style={{opacity: 0}} />
                         <Menu
-                          visible={!!isLabelMenuVisible?.[`tels.${index}`]}
+                          visible={arrayFieldLabelMenuIndex === `tels.${index}`}
                           onDismiss={() =>
-                            setIsLabelMenuVisible({
-                              [`tels.${index}`]: false,
-                            })
+                            setArrayFieldLabelMenuIndex(undefined)
                           }
                           anchor={
                             <Pressable
                               onPress={() => {
-                                setIsLabelMenuVisible({
-                                  [`tels.${index}`]: true,
-                                });
+                                setArrayFieldLabelMenuIndex(`tels.${index}`);
                               }}>
                               <TextInput
                                 label="Label"
@@ -345,7 +363,7 @@ function ContactCreateScreen({route, navigation}: any) {
                             <Menu.Item
                               onPress={() => {
                                 setFieldValue(`tels.${index}.label`, type);
-                                setIsLabelMenuVisible(undefined);
+                                setArrayFieldLabelMenuIndex(undefined);
                               }}
                               title={
                                 type.charAt(0).toUpperCase() + type.slice(1)
@@ -372,7 +390,12 @@ function ContactCreateScreen({route, navigation}: any) {
                         />
                         <TextInput
                           style={{flex: 1}}
-                          onChangeText={handleChange(`emails.${index}.value`)}
+                          onChangeText={value => {
+                            setFieldValue(`emails.${index}.value`, value);
+                            if (index === values.emails.length - 1) {
+                              setArrayFieldName('emails');
+                            }
+                          }}
                           onBlur={handleBlur(`emails.${index}.value`)}
                           value={email.value}
                           label="Adresse email"
@@ -386,18 +409,16 @@ function ContactCreateScreen({route, navigation}: any) {
                       <View style={{flexDirection: 'row'}}>
                         <IconButton icon="phone" style={{opacity: 0}} />
                         <Menu
-                          visible={!!isLabelMenuVisible?.[`emails.${index}`]}
+                          visible={
+                            arrayFieldLabelMenuIndex === `emails.${index}`
+                          }
                           onDismiss={() =>
-                            setIsLabelMenuVisible({
-                              [`emails.${index}`]: false,
-                            })
+                            setArrayFieldLabelMenuIndex(undefined)
                           }
                           anchor={
                             <Pressable
                               onPress={() => {
-                                setIsLabelMenuVisible({
-                                  [`emails.${index}`]: true,
-                                });
+                                setArrayFieldLabelMenuIndex(`emails.${index}`);
                               }}>
                               <TextInput
                                 label="Label"
@@ -414,7 +435,7 @@ function ContactCreateScreen({route, navigation}: any) {
                             <Menu.Item
                               onPress={() => {
                                 setFieldValue(`emails.${index}.label`, type);
-                                setIsLabelMenuVisible(undefined);
+                                setArrayFieldLabelMenuIndex(undefined);
                               }}
                               title={
                                 type.charAt(0).toUpperCase() + type.slice(1)
@@ -441,7 +462,12 @@ function ContactCreateScreen({route, navigation}: any) {
                         />
                         <TextInput
                           style={{flex: 1}}
-                          onChangeText={handleChange(`adrs.${index}.value`)}
+                          onChangeText={value => {
+                            setFieldValue(`adrs.${index}.value`, value);
+                            if (index === values.adrs.length - 1) {
+                              setArrayFieldName('adrs');
+                            }
+                          }}
                           onBlur={handleBlur(`adrs.${index}.value`)}
                           value={adr.value}
                           label="Adresse adr"
@@ -455,18 +481,14 @@ function ContactCreateScreen({route, navigation}: any) {
                       <View style={{flexDirection: 'row'}}>
                         <IconButton icon="phone" style={{opacity: 0}} />
                         <Menu
-                          visible={!!isLabelMenuVisible?.[`adrs.${index}`]}
+                          visible={arrayFieldLabelMenuIndex === `adrs.${index}`}
                           onDismiss={() =>
-                            setIsLabelMenuVisible({
-                              [`adrs.${index}`]: false,
-                            })
+                            setArrayFieldLabelMenuIndex(`adrs.${index}`)
                           }
                           anchor={
                             <Pressable
                               onPress={() => {
-                                setIsLabelMenuVisible({
-                                  [`adrs.${index}`]: true,
-                                });
+                                setArrayFieldLabelMenuIndex(`adrs.${index}`);
                               }}>
                               <TextInput
                                 label="Label"
@@ -483,7 +505,7 @@ function ContactCreateScreen({route, navigation}: any) {
                             <Menu.Item
                               onPress={() => {
                                 setFieldValue(`adrs.${index}.label`, type);
-                                setIsLabelMenuVisible(undefined);
+                                setArrayFieldLabelMenuIndex(undefined);
                               }}
                               title={
                                 type.charAt(0).toUpperCase() + type.slice(1)
@@ -529,19 +551,18 @@ function ContactCreateScreen({route, navigation}: any) {
                         <IconButton icon="phone" style={{opacity: 0}} />
                         <Menu
                           visible={
-                            !!isLabelMenuVisible?.[`socialProfiles.${index}`]
+                            arrayFieldLabelMenuIndex ===
+                            `socialProfiles.${index}`
                           }
                           onDismiss={() =>
-                            setIsLabelMenuVisible({
-                              [`socialProfiles.${index}`]: false,
-                            })
+                            setArrayFieldLabelMenuIndex(undefined)
                           }
                           anchor={
                             <Pressable
                               onPress={() => {
-                                setIsLabelMenuVisible({
-                                  [`socialProfiles.${index}`]: true,
-                                });
+                                setArrayFieldLabelMenuIndex(
+                                  `socialProfiles.${index}`,
+                                );
                               }}>
                               <TextInput
                                 label="Label"
@@ -563,7 +584,7 @@ function ContactCreateScreen({route, navigation}: any) {
                                   `socialProfiles.${index}.label`,
                                   type,
                                 );
-                                setIsLabelMenuVisible(undefined);
+                                setArrayFieldLabelMenuIndex(undefined);
                               }}
                               title={
                                 type.charAt(0).toUpperCase() + type.slice(1)
