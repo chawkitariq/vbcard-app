@@ -156,6 +156,7 @@ function ContactCreateScreen({route, navigation}: any) {
           },
         ],
       }));
+      setArrayFieldName(undefined);
     }
   }, [ArrayFieldName, formRef?.current]);
 
@@ -542,9 +543,15 @@ function ContactCreateScreen({route, navigation}: any) {
                         />
                         <TextInput
                           style={{flex: 1}}
-                          onChangeText={handleChange(
-                            `socialProfiles.${index}.value`,
-                          )}
+                          onChangeText={value => {
+                            setFieldValue(
+                              `socialProfiles.${index}.value`,
+                              value,
+                            );
+                            if (index === values.socialProfiles.length - 1) {
+                              setArrayFieldName('socialProfiles');
+                            }
+                          }}
                           onBlur={handleBlur(`socialProfiles.${index}.value`)}
                           value={socialProfile.value}
                           label="Réseau social"
@@ -621,7 +628,12 @@ function ContactCreateScreen({route, navigation}: any) {
                         />
                         <TextInput
                           style={{flex: 1}}
-                          onChangeText={handleChange(`urls.${index}.value`)}
+                          onChangeText={value => {
+                            setFieldValue(`urls.${index}.value`, value);
+                            if (index === values.urls.length - 1) {
+                              setArrayFieldName('urls');
+                            }
+                          }}
                           onBlur={handleBlur(`urls.${index}.value`)}
                           value={url.value}
                           label="Site web"
