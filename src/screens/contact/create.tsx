@@ -105,27 +105,37 @@ function ContactCreateScreen({route, navigation}: any) {
         .add('title', data.companyTitle)
         .add('note', data.note);
 
-      for (const tel of data.tels) {
-        vcard.add('tel', tel.value, {type: tel.label});
-      }
-
-      for (const email of data.emails) {
-        vcard.add('email', email.value, {type: email.label});
-      }
-
-      for (const adr of data.adrs) {
-        vcard.add('adr', adr.value, {type: adr.label});
-      }
-
-      for (const socialProfile of data.socialProfiles) {
-        vcard.add('socialProfile', socialProfile.value, {
-          type: socialProfile.label,
+      data.tels
+        .filter(tel => tel.value)
+        .forEach(tel => {
+          vcard.add('tel', tel.value, {type: tel.label});
         });
-      }
 
-      for (const url of data.urls) {
-        vcard.add('url', url.value);
-      }
+      data.emails
+        .filter(email => email.value)
+        .forEach(email => {
+          vcard.add('email', email.value, {type: email.label});
+        });
+
+      data.adrs
+        .filter(adr => adr.value)
+        .forEach(adr => {
+          vcard.add('adr', adr.value, {type: adr.label});
+        });
+
+      data.socialProfiles
+        .filter(socialProfile => socialProfile.value)
+        .forEach(socialProfile => {
+          vcard.add('socialProfile', socialProfile.value, {
+            type: socialProfile.label,
+          });
+        });
+
+      data.urls
+        .filter(url => url.value)
+        .forEach(url => {
+          vcard.add('url', url.value);
+        });
 
       handleCreate({vcard: vcard.toString()});
     },
