@@ -76,8 +76,6 @@ function ContactCreateScreen({route, navigation}: any) {
 
   const [isShowPersonalMore, setIsShowPersonalMore] = useState(false);
 
-  const [ArrayFieldName, setArrayFieldName] = useState<ArrayFieldsNames>();
-
   const [arrayFieldLabelMenuIndex, setArrayFieldLabelMenuIndex] =
     useState<`${ArrayFieldsNames}.${number}`>();
 
@@ -143,22 +141,6 @@ function ContactCreateScreen({route, navigation}: any) {
   );
 
   const formRef = useRef<FormikProps<typeof initialValues>>(null);
-
-  useEffect(() => {
-    if (ArrayFieldName) {
-      formRef?.current?.setValues(values => ({
-        ...values,
-        [ArrayFieldName]: [
-          ...values[ArrayFieldName],
-          {
-            value: '',
-            label: VCARD_TYPES_LABLES[VCARD_TYPES.HOME],
-          },
-        ],
-      }));
-      setArrayFieldName(undefined);
-    }
-  }, [ArrayFieldName, formRef?.current]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -331,21 +313,28 @@ function ContactCreateScreen({route, navigation}: any) {
                         />
                         <TextInput
                           style={{flex: 1}}
-                          onChangeText={value => {
-                            setFieldValue(`tels.${index}.value`, value);
-                            if (index === values.tels.length - 1) {
-                              setArrayFieldName('tels');
-                            }
-                          }}
+                          onChangeText={handleChange(`tels.${index}.value`)}
                           onBlur={handleBlur(`tels.${index}.value`)}
                           value={tel.value}
                           label="Téléphone"
                         />
-                        <IconButton
-                          icon="close"
-                          onPress={() => remove(index)}
-                          style={[values.tels.length <= 1 && {opacity: 0}]}
-                        />
+                        {!(index === values.tels.length - 1) && (
+                          <IconButton
+                            icon="close"
+                            onPress={() => remove(index)}
+                          />
+                        )}
+                        {index === values.tels.length - 1 && (
+                          <IconButton
+                            icon="plus"
+                            onPress={() =>
+                              push({
+                                value: '',
+                                label: VCARD_TYPES_LABLES[VCARD_TYPES.HOME],
+                              })
+                            }
+                          />
+                        )}
                       </View>
                       <View style={{flexDirection: 'row'}}>
                         <IconButton icon="phone" style={{opacity: 0}} />
@@ -401,21 +390,28 @@ function ContactCreateScreen({route, navigation}: any) {
                         />
                         <TextInput
                           style={{flex: 1}}
-                          onChangeText={value => {
-                            setFieldValue(`emails.${index}.value`, value);
-                            if (index === values.emails.length - 1) {
-                              setArrayFieldName('emails');
-                            }
-                          }}
+                          onChangeText={handleChange(`emails.${index}.value`)}
                           onBlur={handleBlur(`emails.${index}.value`)}
                           value={email.value}
                           label="Adresse email"
                         />
-                        <IconButton
-                          icon="close"
-                          onPress={() => remove(index)}
-                          style={[values.emails.length <= 1 && {opacity: 0}]}
-                        />
+                        {!(index === values.emails.length - 1) && (
+                          <IconButton
+                            icon="close"
+                            onPress={() => remove(index)}
+                          />
+                        )}
+                        {index === values.emails.length - 1 && (
+                          <IconButton
+                            icon="plus"
+                            onPress={() =>
+                              push({
+                                value: '',
+                                label: VCARD_TYPES_LABLES[VCARD_TYPES.HOME],
+                              })
+                            }
+                          />
+                        )}
                       </View>
                       <View style={{flexDirection: 'row'}}>
                         <IconButton icon="phone" style={{opacity: 0}} />
@@ -473,21 +469,28 @@ function ContactCreateScreen({route, navigation}: any) {
                         />
                         <TextInput
                           style={{flex: 1}}
-                          onChangeText={value => {
-                            setFieldValue(`adrs.${index}.value`, value);
-                            if (index === values.adrs.length - 1) {
-                              setArrayFieldName('adrs');
-                            }
-                          }}
+                          onChangeText={handleChange(`adrs.${index}.value`)}
                           onBlur={handleBlur(`adrs.${index}.value`)}
                           value={adr.value}
                           label="Adresse adr"
                         />
-                        <IconButton
-                          icon="close"
-                          onPress={() => remove(index)}
-                          style={[values.adrs.length <= 1 && {opacity: 0}]}
-                        />
+                        {!(index === values.adrs.length - 1) && (
+                          <IconButton
+                            icon="close"
+                            onPress={() => remove(index)}
+                          />
+                        )}
+                        {index === values.adrs.length - 1 && (
+                          <IconButton
+                            icon="plus"
+                            onPress={() =>
+                              push({
+                                value: '',
+                                label: VCARD_TYPES_LABLES[VCARD_TYPES.HOME],
+                              })
+                            }
+                          />
+                        )}
                       </View>
                       <View style={{flexDirection: 'row'}}>
                         <IconButton icon="phone" style={{opacity: 0}} />
@@ -543,26 +546,30 @@ function ContactCreateScreen({route, navigation}: any) {
                         />
                         <TextInput
                           style={{flex: 1}}
-                          onChangeText={value => {
-                            setFieldValue(
-                              `socialProfiles.${index}.value`,
-                              value,
-                            );
-                            if (index === values.socialProfiles.length - 1) {
-                              setArrayFieldName('socialProfiles');
-                            }
-                          }}
+                          onChangeText={handleChange(
+                            `socialProfiles.${index}.value`,
+                          )}
                           onBlur={handleBlur(`socialProfiles.${index}.value`)}
                           value={socialProfile.value}
                           label="Réseau social"
                         />
-                        <IconButton
-                          icon="close"
-                          onPress={() => remove(index)}
-                          style={[
-                            values.socialProfiles.length <= 1 && {opacity: 0},
-                          ]}
-                        />
+                        {!(index === values.socialProfiles.length - 1) && (
+                          <IconButton
+                            icon="close"
+                            onPress={() => remove(index)}
+                          />
+                        )}
+                        {index === values.socialProfiles.length - 1 && (
+                          <IconButton
+                            icon="plus"
+                            onPress={() =>
+                              push({
+                                value: '',
+                                label: VCARD_TYPES_LABLES[VCARD_TYPES.HOME],
+                              })
+                            }
+                          />
+                        )}
                       </View>
                       <View style={{flexDirection: 'row'}}>
                         <IconButton icon="phone" style={{opacity: 0}} />
@@ -628,21 +635,27 @@ function ContactCreateScreen({route, navigation}: any) {
                         />
                         <TextInput
                           style={{flex: 1}}
-                          onChangeText={value => {
-                            setFieldValue(`urls.${index}.value`, value);
-                            if (index === values.urls.length - 1) {
-                              setArrayFieldName('urls');
-                            }
-                          }}
+                          onChangeText={handleChange(`urls.${index}.value`)}
                           onBlur={handleBlur(`urls.${index}.value`)}
                           value={url.value}
                           label="Site web"
                         />
-                        <IconButton
-                          icon="close"
-                          onPress={() => remove(index)}
-                          style={[values.urls.length <= 1 && {opacity: 0}]}
-                        />
+                        {!(index === values.urls.length - 1) && (
+                          <IconButton
+                            icon="close"
+                            onPress={() => remove(index)}
+                          />
+                        )}
+                        {index === values.urls.length - 1 && (
+                          <IconButton
+                            icon="plus"
+                            onPress={() =>
+                              push({
+                                value: '',
+                              })
+                            }
+                          />
+                        )}
                       </View>
                     </>
                   ))}
