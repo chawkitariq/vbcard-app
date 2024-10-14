@@ -28,9 +28,9 @@ const initialValues = {
   lastName: '',
   nameSuffix: '',
   nickName: '',
-  company: '',
-  companyDepartement: '',
-  companyTitle: '',
+  org: '',
+  orgDepartement: '',
+  title: '',
   note: '',
   tels: [
     {
@@ -101,8 +101,8 @@ function ContactCreateScreen({route, navigation}: any) {
       vcard
         .add('version', '4.0')
         .add('fn', `${data.firstName} ${data.lastName}`)
-        .add('org', data.company)
-        .add('title', data.companyTitle)
+        .add('org', data.org)
+        .add('title', data.title)
         .add('note', data.note);
 
       data.tels
@@ -288,9 +288,9 @@ function ContactCreateScreen({route, navigation}: any) {
                 <IconButton icon="domain" />
                 <TextInput
                   style={{flex: 1}}
-                  onChangeText={handleChange('company')}
-                  onBlur={handleBlur('company')}
-                  value={values.company}
+                  onChangeText={handleChange('org')}
+                  onBlur={handleBlur('org')}
+                  value={values.org}
                   label="Entreprise"
                 />
                 <IconButton icon="account" style={{opacity: 0}} />
@@ -299,9 +299,9 @@ function ContactCreateScreen({route, navigation}: any) {
                 <IconButton icon="domain" style={{opacity: 0}} />
                 <TextInput
                   style={{flex: 1}}
-                  onChangeText={handleChange('companyDepartement')}
-                  onBlur={handleBlur('companyDepartement')}
-                  value={values.companyDepartement}
+                  onChangeText={handleChange('orgDepartement')}
+                  onBlur={handleBlur('orgDepartement')}
+                  value={values.orgDepartement}
                   label="Département"
                 />
                 <IconButton icon="account" style={{opacity: 0}} />
@@ -310,9 +310,9 @@ function ContactCreateScreen({route, navigation}: any) {
                 <IconButton icon="domain" style={{opacity: 0}} />
                 <TextInput
                   style={{flex: 1}}
-                  onChangeText={handleChange('companyTitle')}
-                  onBlur={handleBlur('companyTitle')}
-                  value={values.companyTitle}
+                  onChangeText={handleChange('title')}
+                  onBlur={handleBlur('title')}
+                  value={values.title}
                   label="Poste"
                 />
                 <IconButton icon="account" style={{opacity: 0}} />
