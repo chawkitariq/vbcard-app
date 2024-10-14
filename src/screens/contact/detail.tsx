@@ -4,20 +4,19 @@ import {Alert, ScrollView, Share, View} from 'react-native';
 import {
   ActivityIndicator,
   Appbar,
-  Dialog,
+  Divider,
+  IconButton,
+  List,
   Menu,
-  Portal,
-  Text,
 } from 'react-native-paper';
-import {ContactApiService, ContactFollowingApiService} from '../../services';
-import vCard from 'vcf';
+import {ContactApiService} from '../../services';
 import {ContactCard} from '../../components';
+import vCard from 'vcf';
 
 function ContactDetailScreen({route, navigation}: any) {
   const {contactId} = route.params;
 
   const [isMenuVisible, setIsMenuVisible] = useState(false);
-
   const {isPending, data: contact} = useQuery({
     queryKey: ['contacts', contactId],
     queryFn: () => ContactApiService.findOne(contactId),
@@ -71,6 +70,47 @@ function ContactDetailScreen({route, navigation}: any) {
     closeMenu();
   }, [contactId]);
 
+  const [vcard, setVcard] = useState(() => {
+    if (contact?.vcard) {
+      return new vCard().parse(contact.vcard);
+    }
+  });
+
+  const [tels, setTels] = useState(() =>
+    (vcard?.get('tel') as vCard.Property[])?.map(tel => ({
+      label: tel.toJSON()[1]['type'],
+      value: tel.valueOf(),
+    })),
+  );
+
+  const [emails, setEmails] = useState(() =>
+    (vcard?.get('email') as vCard.Property[])?.map(email => ({
+      label: email.toJSON()[1]['type'],
+      value: email.valueOf(),
+    })),
+  );
+
+  const [adrs, setAdrs] = useState(() =>
+    (vcard?.get('adr') as vCard.Property[])?.map(adr => ({
+      value: adr.valueOf(),
+      label: adr.toJSON()[1]['type'],
+    })),
+  );
+
+  const [socialProfiles, setSocialProfiles] = useState(() =>
+    (vcard?.get('socialProfile') as vCard.Property[])?.map(adr => ({
+      value: adr.valueOf(),
+      label: adr.toJSON()[1]['type'],
+    })),
+  );
+
+  const [urls, setUrls] = useState(() =>
+    (vcard?.get('url') as vCard.Property[])?.map(url => ({
+      value: url.valueOf(),
+      label: url.toJSON()[1]['type'],
+    })),
+  );
+
   useEffect(() => {
     navigation.setOptions({
       header: () => (
@@ -104,8 +144,90 @@ function ContactDetailScreen({route, navigation}: any) {
   }
 
   return (
-    <ScrollView style={{minHeight: '100%', padding: 16}}>
-      <ContactCard />
+    <ScrollView style={{minHeight: '100%'}}>
+      <View style={{padding: 16}}>
+        <ContactCard />
+
+        <View>
+          {tels?.map((tel, i) => (
+            <List.Item
+              left={props => (
+                <List.Icon
+                  {...props}
+                  icon="phone"
+                  style={[!!i && {opacity: 0}]}
+                />
+              )}
+              title={tel.value}
+              description={tel.label}
+            />
+          ))}
+
+          <Divider />
+
+          {emails?.map((email, i) => (
+            <List.Item
+              left={props => (
+                <List.Icon
+                  {...props}
+                  icon="email"
+                  style={[!!i && {opacity: 0}]}
+                />
+              )}
+              title={email.value}
+              description={email.label}
+            />
+          ))}
+
+          <Divider />
+
+          {adrs?.map((adr, i) => (
+            <List.Item
+              left={props => (
+                <List.Icon
+                  {...props}
+                  icon="map-marker"
+                  style={[!!i && {opacity: 0}]}
+                />
+              )}
+              title={adr.value}
+              description={adr.label}
+            />
+          ))}
+
+          <Divider />
+
+          {socialProfiles?.map((socialProfile, i) => (
+            <List.Item
+              left={props => (
+                <List.Icon
+                  {...props}
+                  icon="share-variant"
+                  style={[!!i && {opacity: 0}]}
+                />
+              )}
+              title={socialProfile.value}
+              description={socialProfile.label}
+            />
+          ))}
+
+          <Divider />
+
+          {urls?.map((url, i) => (
+            <List.Item
+              left={props => (
+                <List.Icon
+                  {...props}
+                  icon="web"
+                  style={[!!i && {opacity: 0}]}
+                />
+              )}
+              title={url.value}
+              description={url.label}
+            />
+          ))}
+        </View>
+      </View>
     </ScrollView>
   );
 }

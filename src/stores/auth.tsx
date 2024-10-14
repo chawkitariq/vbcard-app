@@ -26,7 +26,7 @@ export const useAuthStore = create(
   persist<State & Action>(
     (set, get) => ({
       ...initialState,
-      isAuth: () => !isExpired(get().expiresIn as number),
+      isAuth: () => !!get().accessToken,
       login: ({access_token: accessToken, expires_in: expiresIn}) =>
         set(() => ({accessToken, expiresIn})),
       logout: () => set(() => initialState),

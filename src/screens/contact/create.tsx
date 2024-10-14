@@ -312,10 +312,12 @@ function ContactCreateScreen({route, navigation}: any) {
                           style={[index !== 0 && {opacity: 0}]}
                         />
                         <TextInput
+                          keyboardType="phone-pad"
                           style={{flex: 1}}
                           onChangeText={handleChange(`tels.${index}.value`)}
                           onBlur={handleBlur(`tels.${index}.value`)}
                           value={tel.value}
+                          autoFocus={index === values.tels.length - 1}
                           label="Téléphone"
                         />
                         {!(index === values.tels.length - 1) && (
@@ -390,8 +392,10 @@ function ContactCreateScreen({route, navigation}: any) {
                         />
                         <TextInput
                           style={{flex: 1}}
+                          keyboardType="email-address"
                           onChangeText={handleChange(`emails.${index}.value`)}
                           onBlur={handleBlur(`emails.${index}.value`)}
+                          autoFocus={index === values.emails.length - 1}
                           value={email.value}
                           label="Adresse email"
                         />
@@ -471,6 +475,7 @@ function ContactCreateScreen({route, navigation}: any) {
                           style={{flex: 1}}
                           onChangeText={handleChange(`adrs.${index}.value`)}
                           onBlur={handleBlur(`adrs.${index}.value`)}
+                          autoFocus={index === values.adrs.length - 1}
                           value={adr.value}
                           label="Adresse adr"
                         />
@@ -551,6 +556,7 @@ function ContactCreateScreen({route, navigation}: any) {
                           )}
                           onBlur={handleBlur(`socialProfiles.${index}.value`)}
                           value={socialProfile.value}
+                          autoFocus={index === values.socialProfiles.length - 1}
                           label="Réseau social"
                         />
                         {!(index === values.socialProfiles.length - 1) && (
@@ -638,6 +644,8 @@ function ContactCreateScreen({route, navigation}: any) {
                           onChangeText={handleChange(`urls.${index}.value`)}
                           onBlur={handleBlur(`urls.${index}.value`)}
                           value={url.value}
+                          keyboardType="url"
+                          autoFocus={index === values.urls.length - 1}
                           label="Site web"
                         />
                         {!(index === values.urls.length - 1) && (
