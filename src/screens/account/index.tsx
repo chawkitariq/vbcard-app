@@ -29,16 +29,6 @@ function AccountIndexScreen({navigation}: any) {
 
   const theme = useTheme();
 
-  const styles = useMemo(() => {
-    return StyleSheet.create({
-      list: {
-        borderWidth: 1,
-        borderColor: theme.colors.surfaceVariant,
-        borderRadius: theme.roundness,
-      },
-    });
-  }, [theme]);
-
   return (
     <ScrollView
       style={{
@@ -50,15 +40,15 @@ function AccountIndexScreen({navigation}: any) {
       </Appbar>
       <View style={{gap: 16}}>
         <List.Item
-          style={styles.list}
           title={me?.email}
           left={props => <Avatar.Text {...props} size={16 * 4} label="XD" />}
           right={props => <List.Icon {...props} icon="chevron-right" />}
         />
 
+        <Divider />
+
         <List.Item
           title="Mode sombre"
-          style={styles.list}
           left={props => <List.Icon {...props} icon="brightness-6" />}
           right={props => (
             <Switch
@@ -69,30 +59,34 @@ function AccountIndexScreen({navigation}: any) {
           )}
         />
 
+        <Divider />
+
         <List.Item
           title="Abonnements"
-          style={styles.list}
           left={props => <List.Icon {...props} icon="wallet" />}
           right={props => <List.Icon {...props} icon="chevron-right" />}
         />
 
+        <Divider />
+
         <List.Item
           title="Langues"
-          style={styles.list}
           left={props => <List.Icon {...props} icon="translate" />}
           right={props => <List.Icon {...props} icon="chevron-right" />}
         />
 
+        <Divider />
+
         <List.Item
           title="Aide"
-          style={styles.list}
           left={props => <List.Icon {...props} icon="help-circle-outline" />}
           right={props => <List.Icon {...props} icon="chevron-right" />}
         />
 
+        <Divider />
+
         <List.Item
           title="Se déconnecter"
-          style={[styles.list]}
           titleStyle={{color: theme.colors.error}}
           onPress={logout}
         />

@@ -174,9 +174,9 @@ function ContactCreateScreen({route, navigation}: any) {
         onSubmit={handleSubmit}>
         {({handleChange, handleBlur, setFieldValue, values}) => (
           <View style={{paddingVertical: 16, gap: 16}}>
-            <Pressable style={{paddingHorizontal: 16}}>
+            <View style={{paddingHorizontal: 16}}>
               <ContactCard />
-            </Pressable>
+            </View>
 
             <View>
               {isShowPersonalMore && (
@@ -546,7 +546,7 @@ function ContactCreateScreen({route, navigation}: any) {
                     <View key={index}>
                       <View style={{flexDirection: 'row'}}>
                         <IconButton
-                          icon="account-network"
+                          icon="share-variant"
                           style={[index !== 0 && {opacity: 0}]}
                         />
                         <TextInput

@@ -5,7 +5,6 @@ import {
   ActivityIndicator,
   Appbar,
   Divider,
-  IconButton,
   List,
   Menu,
 } from 'react-native-paper';
@@ -70,46 +69,14 @@ function ContactDetailScreen({route, navigation}: any) {
     closeMenu();
   }, [contactId]);
 
-  const [vcard, setVcard] = useState(() => {
+  const [vcard, setVcard] = useState<vCard>();
+
+  useEffect(() => {
     if (contact?.vcard) {
-      return new vCard().parse(contact.vcard);
+      const vcard = new vCard().parse(contact.vcard);
+      setVcard(vcard);
     }
-  });
-
-  const [tels, setTels] = useState(() =>
-    (vcard?.get('tel') as vCard.Property[])?.map(tel => ({
-      label: tel.toJSON()[1]['type'],
-      value: tel.valueOf(),
-    })),
-  );
-
-  const [emails, setEmails] = useState(() =>
-    (vcard?.get('email') as vCard.Property[])?.map(email => ({
-      label: email.toJSON()[1]['type'],
-      value: email.valueOf(),
-    })),
-  );
-
-  const [adrs, setAdrs] = useState(() =>
-    (vcard?.get('adr') as vCard.Property[])?.map(adr => ({
-      value: adr.valueOf(),
-      label: adr.toJSON()[1]['type'],
-    })),
-  );
-
-  const [socialProfiles, setSocialProfiles] = useState(() =>
-    (vcard?.get('socialProfile') as vCard.Property[])?.map(adr => ({
-      value: adr.valueOf(),
-      label: adr.toJSON()[1]['type'],
-    })),
-  );
-
-  const [urls, setUrls] = useState(() =>
-    (vcard?.get('url') as vCard.Property[])?.map(url => ({
-      value: url.valueOf(),
-      label: url.toJSON()[1]['type'],
-    })),
-  );
+  }, [contact?.vcard]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -148,8 +115,12 @@ function ContactDetailScreen({route, navigation}: any) {
       <View style={{padding: 16}}>
         <ContactCard />
 
-        <View>
-          {tels?.map((tel, i) => (
+        {(vcard?.get('tel') as vCard.Property[])
+          ?.map(tel => ({
+            label: tel.toJSON()[1]['type'],
+            value: tel.valueOf(),
+          }))
+          ?.map((tel, i) => (
             <List.Item
               left={props => (
                 <List.Icon
@@ -163,9 +134,14 @@ function ContactDetailScreen({route, navigation}: any) {
             />
           ))}
 
-          <Divider />
+        <Divider />
 
-          {emails?.map((email, i) => (
+        {(vcard?.get('email') as vCard.Property[])
+          ?.map(email => ({
+            label: email.toJSON()[1]['type'],
+            value: email.valueOf(),
+          }))
+          ?.map((email, i) => (
             <List.Item
               left={props => (
                 <List.Icon
@@ -179,9 +155,14 @@ function ContactDetailScreen({route, navigation}: any) {
             />
           ))}
 
-          <Divider />
+        <Divider />
 
-          {adrs?.map((adr, i) => (
+        {(vcard?.get('adr') as vCard.Property[])
+          ?.map(adr => ({
+            value: adr.valueOf(),
+            label: adr.toJSON()[1]['type'],
+          }))
+          ?.map((adr, i) => (
             <List.Item
               left={props => (
                 <List.Icon
@@ -195,9 +176,14 @@ function ContactDetailScreen({route, navigation}: any) {
             />
           ))}
 
-          <Divider />
+        <Divider />
 
-          {socialProfiles?.map((socialProfile, i) => (
+        {(vcard?.get('socialProfile') as vCard.Property[])
+          ?.map(adr => ({
+            value: adr.valueOf(),
+            label: adr.toJSON()[1]['type'],
+          }))
+          ?.map((socialProfile, i) => (
             <List.Item
               left={props => (
                 <List.Icon
@@ -211,9 +197,14 @@ function ContactDetailScreen({route, navigation}: any) {
             />
           ))}
 
-          <Divider />
+        <Divider />
 
-          {urls?.map((url, i) => (
+        {(vcard?.get('url') as vCard.Property[])
+          ?.map(url => ({
+            value: url.valueOf(),
+            label: url.toJSON()[1]['type'],
+          }))
+          ?.map((url, i) => (
             <List.Item
               left={props => (
                 <List.Icon
@@ -226,7 +217,6 @@ function ContactDetailScreen({route, navigation}: any) {
               description={url.label}
             />
           ))}
-        </View>
       </View>
     </ScrollView>
   );
